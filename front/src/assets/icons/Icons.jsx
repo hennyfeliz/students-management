@@ -19,3 +19,9 @@ export const DownSortArrow = ({ width = "18px", height = "18px", action }) => {
     </svg>
   )
 }
+
+export const UpSortArrow = ({ width = "18px", height = "18px", action }) => {
+  return (
+    <svg className="table-header-icon" onClick={action} width={width} height={height} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M7 3V21M7 3L11 7M7 3L3 7M14 3H15M14 9H17M14 15H19M14 21H21" stroke="#6b7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+  )
+}
