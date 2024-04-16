@@ -25,3 +25,25 @@ export const UpSortArrow = ({ width = "18px", height = "18px", action }) => {
     <svg className="table-header-icon" onClick={action} width={width} height={height} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M7 3V21M7 3L11 7M7 3L3 7M14 3H15M14 9H17M14 15H19M14 21H21" stroke="#6b7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
   )
 }
+
+export const SortingArrow = ({ width = "18px", height = "18px", action }) => {
+  return (
+    <svg className="table-header-icon" onClick={action} width={width} height={height} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g id="SVGRepo_bgCarrier" stroke-width="0">
+
+      </g>
+      <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
+      </g>
+      <g id="SVGRepo_iconCarrier">
+        <path d="M7 4V20M7 20L3 16M7 20L11 16M17 4V20M17 4L21 8M17 4L13 8" stroke="#6b7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        </path>
+      </g>
+    </svg>
+  )
+}
+
+export const ExportCSVIcon = ({ width = "18px", height = "18px", action }) => {
+  return (
+    <svg onClick={action} width={width} height={height} viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><polyline points="48 24 32 8 16 24"></polyline><line x1="56" y1="56" x2="8" y2="56"></line><line x1="32" y1="48" x2="32" y2="8"></line></g></svg>
+  )
+}
