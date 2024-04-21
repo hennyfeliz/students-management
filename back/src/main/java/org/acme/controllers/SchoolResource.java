@@ -24,6 +24,7 @@ import org.jboss.logging.Logger;
 import org.jboss.resteasy.reactive.RestQuery;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Path("school")
@@ -43,7 +44,8 @@ public class SchoolResource {
     ) {
         Long totalCount = School.count();
         size = (size == null) ? 10 : size;
-        page = (page == null) ? 1 : page;
+        page = (page == null) ? 0 : page;
+        sort = (Objects.equals(sort, "")) ? "schoolName" : sort;
 
         return Response.ok(new PagedResult<>(School.findAll(Sort.by((sort == null) ? "schoolName" : sort))
                 .page(Page.of((page == null) ? 0 : page, (size == null) ? 10 : size))
