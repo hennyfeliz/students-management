@@ -16,6 +16,8 @@ import org.acme.entities.Student;
 import org.acme.pagination.PagedResult;
 import org.jboss.logging.Logger;
 
+import java.util.Objects;
+
 @Path("student")
 @ApplicationScoped
 @Produces(MediaType.APPLICATION_JSON)
@@ -33,6 +35,7 @@ public class StudentResource {
         Long totalCount = Student.count();
         size = (size == null) ? 10 : size;
         page = (page == null) ? 1 : page;
+        sort = (Objects.equals(sort, "")) ? "studentName" : sort;
 
         return Response.ok(new PagedResult<>(Student.findAll(Sort.by((sort == null) ? "studentName" : sort))
                 .page(Page.of((page == null) ? 0 : page, (size == null) ? 10 : size))
