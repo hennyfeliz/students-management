@@ -1,0 +1,367 @@
+2024-04-23 00:46:02.219625-04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "SCHOOL" ya existe
+Table "SCHOOL" already exists; SQL statement:
+CREATE TABLE School (     school_id INT PRIMARY KEY AUTO_INCREMENT,     school_name VARCHAR(100) NOT NULL,     address VARCHAR(255),     phone_number VARCHAR(20) ) [42101-224]
+2024-04-23 00:46:02.225186-04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "TEACHERS" ya existe
+Table "TEACHERS" already exists; SQL statement:
+CREATE TABLE Teachers (     teacher_id INT PRIMARY KEY AUTO_INCREMENT,     school_id INT,     teacher_name VARCHAR(100) NOT NULL,     subject_taught VARCHAR(100),     FOREIGN KEY (school_id) REFERENCES School(school_id) ) [42101-224]
+2024-04-23 00:46:02.227648-04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "STUDENTS" ya existe
+Table "STUDENTS" already exists; SQL statement:
+CREATE TABLE Students (     student_id INT PRIMARY KEY AUTO_INCREMENT,     school_id INT,     student_name VARCHAR(100) NOT NULL,     grade_level VARCHAR(20),     FOREIGN KEY (school_id) REFERENCES School(school_id) ) [42101-224]
+2024-04-23 00:46:02.229665-04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "CLASSES" ya existe
+Table "CLASSES" already exists; SQL statement:
+CREATE TABLE Classes (     class_id INT PRIMARY KEY AUTO_INCREMENT,     teacher_id INT,     class_name VARCHAR(100),     schedule VARCHAR(50),     FOREIGN KEY (teacher_id) REFERENCES Teachers(teacher_id) ) [42101-224]
+2024-04-23 00:46:02.233669-04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "CREATE TABLE Enrollments (     enrollment_id INT PRIMARY KEY [*]DEFAULT NEXTVAL('enrollment_sequence'),     student_id INT,     class_id INT,     enrollment_date DATE,     FOREIGN KEY (student_id) REFERENCES Students(student_id),     FOREIGN KEY (class_id) REFERENCES Classes(class_id) )"; se esperaba "HASH, CONSTRAINT, COMMENT, UNIQUE, NOT NULL, CHECK, REFERENCES, ,, )"
+Syntax error in SQL statement "CREATE TABLE Enrollments (     enrollment_id INT PRIMARY KEY [*]DEFAULT NEXTVAL('enrollment_sequence'),     student_id INT,     class_id INT,     enrollment_date DATE,     FOREIGN KEY (student_id) REFERENCES Students(student_id),     FOREIGN KEY (class_id) REFERENCES Classes(class_id) )"; expected "HASH, CONSTRAINT, COMMENT, UNIQUE, NOT NULL, CHECK, REFERENCES, ,, )"; SQL statement:
+CREATE TABLE Enrollments (     enrollment_id INT PRIMARY KEY DEFAULT NEXTVAL('enrollment_sequence'),     student_id INT,     class_id INT,     enrollment_date DATE,     FOREIGN KEY (student_id) REFERENCES Students(student_id),     FOREIGN KEY (class_id) REFERENCES Classes(class_id) ) [42001-224]
+2024-04-23 00:46:02.259962-04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Columna "CLASS_ID" no encontrada
+Column "CLASS_ID" not found; SQL statement:
+INSERT INTO Enrollments (student_id, class_id, enrollment_date) SELECT     ROUND(RANDOM() * 29 + 1) AS student_id,     ROUND(RANDOM() * 9 + 1) AS class_id,     DATEADD('DAY', ROUND(RANDOM() * DATEDIFF('DAY', '2024-01-01', '2024-12-31')), '2024-01-01') AS enrollment_date FROM     SYSTEM_RANGE(1, 100) [42122-224]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:514)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.table.Table.getColumn(Table.java:759)
+	at org.h2.command.Parser.parseColumn(Parser.java:1190)
+	at org.h2.command.Parser.parseColumnList(Parser.java:1175)
+	at org.h2.command.Parser.parseInsert(Parser.java:1549)
+	at org.h2.command.Parser.parsePrepared(Parser.java:719)
+	at org.h2.command.Parser.parse(Parser.java:592)
+	at org.h2.command.Parser.parse(Parser.java:564)
+	at org.h2.command.Parser.prepareCommand(Parser.java:483)
+	at org.h2.engine.SessionLocal.prepareLocal(SessionLocal.java:639)
+	at org.h2.engine.SessionLocal.prepareCommand(SessionLocal.java:559)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1166)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:245)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:231)
+	at io.agroal.pool.wrapper.StatementWrapper.execute(StatementWrapper.java:235)
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80)
+	at org.hibernate.tool.schema.internal.Helper.applySqlString(Helper.java:233)
+	at org.hibernate.tool.schema.internal.Helper.applyScript(Helper.java:255)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.applyImportFiles(SchemaCreatorImpl.java:650)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.applyImportSources(SchemaCreatorImpl.java:569)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.performCreation(SchemaCreatorImpl.java:184)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.doCreation(SchemaCreatorImpl.java:142)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.doCreation(SchemaCreatorImpl.java:118)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:254)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$5(SchemaManagementToolCoordinator.java:143)
+	at java.base/java.util.HashMap.forEach(HashMap.java:1421)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:140)
+	at io.quarkus.hibernate.orm.runtime.observers.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:21)
+	at org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:35)
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:293)
+	at io.quarkus.hibernate.orm.runtime.boot.FastBootEntityManagerFactoryBuilder.build(FastBootEntityManagerFactoryBuilder.java:84)
+	at io.quarkus.hibernate.orm.runtime.FastBootHibernatePersistenceProvider.createEntityManagerFactory(FastBootHibernatePersistenceProvider.java:74)
+	at jakarta.persistence.Persistence.createEntityManagerFactory(Persistence.java:80)
+	at jakarta.persistence.Persistence.createEntityManagerFactory(Persistence.java:55)
+	at io.quarkus.hibernate.orm.runtime.JPAConfig$LazyPersistenceUnit.get(JPAConfig.java:156)
+	at io.quarkus.hibernate.orm.runtime.JPAConfig$1.run(JPAConfig.java:64)
+	at java.base/java.lang.Thread.run(Thread.java:842)
+2024-04-23 00:49:07.148012-04:00 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "SCHOOL" ya existe
+Table "SCHOOL" already exists; SQL statement:
+CREATE TABLE School (     school_id INT PRIMARY KEY AUTO_INCREMENT,     school_name VARCHAR(100) NOT NULL,     address VARCHAR(255),     phone_number VARCHAR(20) ) [42101-224]
+2024-04-23 00:49:07.149012-04:00 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "TEACHERS" ya existe
+Table "TEACHERS" already exists; SQL statement:
+CREATE TABLE Teachers (     teacher_id INT PRIMARY KEY AUTO_INCREMENT,     school_id INT,     teacher_name VARCHAR(100) NOT NULL,     subject_taught VARCHAR(100),     FOREIGN KEY (school_id) REFERENCES School(school_id) ) [42101-224]
+2024-04-23 00:49:07.150012-04:00 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "STUDENTS" ya existe
+Table "STUDENTS" already exists; SQL statement:
+CREATE TABLE Students (     student_id INT PRIMARY KEY AUTO_INCREMENT,     school_id INT,     student_name VARCHAR(100) NOT NULL,     grade_level VARCHAR(20),     FOREIGN KEY (school_id) REFERENCES School(school_id) ) [42101-224]
+2024-04-23 00:49:07.151012-04:00 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "CLASSES" ya existe
+Table "CLASSES" already exists; SQL statement:
+CREATE TABLE Classes (     class_id INT PRIMARY KEY AUTO_INCREMENT,     teacher_id INT,     class_name VARCHAR(100),     schedule VARCHAR(50),     FOREIGN KEY (teacher_id) REFERENCES Teachers(teacher_id) ) [42101-224]
+2024-04-23 00:49:07.152013-04:00 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Sequence "ENROLLMENT_SEQUENCE" ya existe
+Sequence "ENROLLMENT_SEQUENCE" already exists; SQL statement:
+CREATE SEQUENCE enrollment_sequence START WITH 1 INCREMENT BY 1 [90035-224]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:644)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.command.ddl.CreateSequence.update(CreateSequence.java:53)
+	at org.h2.command.ddl.SchemaOwnerCommand.update(SchemaOwnerCommand.java:33)
+	at org.h2.command.CommandContainer.update(CommandContainer.java:169)
+	at org.h2.command.Command.executeUpdate(Command.java:256)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:262)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:231)
+	at io.agroal.pool.wrapper.StatementWrapper.execute(StatementWrapper.java:235)
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80)
+	at org.hibernate.tool.schema.internal.Helper.applySqlString(Helper.java:233)
+	at org.hibernate.tool.schema.internal.Helper.applyScript(Helper.java:255)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.applyImportFiles(SchemaCreatorImpl.java:650)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.applyImportSources(SchemaCreatorImpl.java:569)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.performCreation(SchemaCreatorImpl.java:184)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.doCreation(SchemaCreatorImpl.java:142)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.doCreation(SchemaCreatorImpl.java:118)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:254)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$5(SchemaManagementToolCoordinator.java:143)
+	at java.base/java.util.HashMap.forEach(HashMap.java:1421)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:140)
+	at io.quarkus.hibernate.orm.runtime.observers.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:21)
+	at org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:35)
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:293)
+	at io.quarkus.hibernate.orm.runtime.boot.FastBootEntityManagerFactoryBuilder.build(FastBootEntityManagerFactoryBuilder.java:84)
+	at io.quarkus.hibernate.orm.runtime.FastBootHibernatePersistenceProvider.createEntityManagerFactory(FastBootHibernatePersistenceProvider.java:74)
+	at jakarta.persistence.Persistence.createEntityManagerFactory(Persistence.java:80)
+	at jakarta.persistence.Persistence.createEntityManagerFactory(Persistence.java:55)
+	at io.quarkus.hibernate.orm.runtime.JPAConfig$LazyPersistenceUnit.get(JPAConfig.java:156)
+	at io.quarkus.hibernate.orm.runtime.JPAConfig$1.run(JPAConfig.java:64)
+	at java.base/java.lang.Thread.run(Thread.java:842)
+2024-04-23 00:49:07.154013-04:00 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "CREATE TABLE Enrollments (     enrollment_id INT PRIMARY KEY [*]DEFAULT NEXTVAL('enrollment_sequence'),     student_id INT,     class_id INT,     enrollment_date DATE,     FOREIGN KEY (student_id) REFERENCES Students(student_id),     FOREIGN KEY (class_id) REFERENCES Classes(class_id) )"; se esperaba "HASH, CONSTRAINT, COMMENT, UNIQUE, NOT NULL, CHECK, REFERENCES, ,, )"
+Syntax error in SQL statement "CREATE TABLE Enrollments (     enrollment_id INT PRIMARY KEY [*]DEFAULT NEXTVAL('enrollment_sequence'),     student_id INT,     class_id INT,     enrollment_date DATE,     FOREIGN KEY (student_id) REFERENCES Students(student_id),     FOREIGN KEY (class_id) REFERENCES Classes(class_id) )"; expected "HASH, CONSTRAINT, COMMENT, UNIQUE, NOT NULL, CHECK, REFERENCES, ,, )"; SQL statement:
+CREATE TABLE Enrollments (     enrollment_id INT PRIMARY KEY DEFAULT NEXTVAL('enrollment_sequence'),     student_id INT,     class_id INT,     enrollment_date DATE,     FOREIGN KEY (student_id) REFERENCES Students(student_id),     FOREIGN KEY (class_id) REFERENCES Classes(class_id) ) [42001-224]
+2024-04-23 00:49:07.160012-04:00 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Columna "CLASS_ID" no encontrada
+Column "CLASS_ID" not found; SQL statement:
+INSERT INTO Enrollments (student_id, class_id, enrollment_date) SELECT     ROUND(RANDOM() * 29 + 1) AS student_id,     ROUND(RANDOM() * 9 + 1) AS class_id,     DATEADD('DAY', ROUND(RANDOM() * DATEDIFF('DAY', '2024-01-01', '2024-12-31')), '2024-01-01') AS enrollment_date FROM     SYSTEM_RANGE(1, 100) [42122-224]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:514)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.table.Table.getColumn(Table.java:759)
+	at org.h2.command.Parser.parseColumn(Parser.java:1190)
+	at org.h2.command.Parser.parseColumnList(Parser.java:1175)
+	at org.h2.command.Parser.parseInsert(Parser.java:1549)
+	at org.h2.command.Parser.parsePrepared(Parser.java:719)
+	at org.h2.command.Parser.parse(Parser.java:592)
+	at org.h2.command.Parser.parse(Parser.java:564)
+	at org.h2.command.Parser.prepareCommand(Parser.java:483)
+	at org.h2.engine.SessionLocal.prepareLocal(SessionLocal.java:639)
+	at org.h2.engine.SessionLocal.prepareCommand(SessionLocal.java:559)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1166)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:245)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:231)
+	at io.agroal.pool.wrapper.StatementWrapper.execute(StatementWrapper.java:235)
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80)
+	at org.hibernate.tool.schema.internal.Helper.applySqlString(Helper.java:233)
+	at org.hibernate.tool.schema.internal.Helper.applyScript(Helper.java:255)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.applyImportFiles(SchemaCreatorImpl.java:650)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.applyImportSources(SchemaCreatorImpl.java:569)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.performCreation(SchemaCreatorImpl.java:184)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.doCreation(SchemaCreatorImpl.java:142)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.doCreation(SchemaCreatorImpl.java:118)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:254)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$5(SchemaManagementToolCoordinator.java:143)
+	at java.base/java.util.HashMap.forEach(HashMap.java:1421)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:140)
+	at io.quarkus.hibernate.orm.runtime.observers.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:21)
+	at org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:35)
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:293)
+	at io.quarkus.hibernate.orm.runtime.boot.FastBootEntityManagerFactoryBuilder.build(FastBootEntityManagerFactoryBuilder.java:84)
+	at io.quarkus.hibernate.orm.runtime.FastBootHibernatePersistenceProvider.createEntityManagerFactory(FastBootHibernatePersistenceProvider.java:74)
+	at jakarta.persistence.Persistence.createEntityManagerFactory(Persistence.java:80)
+	at jakarta.persistence.Persistence.createEntityManagerFactory(Persistence.java:55)
+	at io.quarkus.hibernate.orm.runtime.JPAConfig$LazyPersistenceUnit.get(JPAConfig.java:156)
+	at io.quarkus.hibernate.orm.runtime.JPAConfig$1.run(JPAConfig.java:64)
+	at java.base/java.lang.Thread.run(Thread.java:842)
+2024-04-23 00:49:19.837933-04:00 jdbc[5]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "SCHOOL" ya existe
+Table "SCHOOL" already exists; SQL statement:
+CREATE TABLE School (     school_id INT PRIMARY KEY AUTO_INCREMENT,     school_name VARCHAR(100) NOT NULL,     address VARCHAR(255),     phone_number VARCHAR(20) ) [42101-224]
+2024-04-23 00:49:19.839943-04:00 jdbc[5]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "TEACHERS" ya existe
+Table "TEACHERS" already exists; SQL statement:
+CREATE TABLE Teachers (     teacher_id INT PRIMARY KEY AUTO_INCREMENT,     school_id INT,     teacher_name VARCHAR(100) NOT NULL,     subject_taught VARCHAR(100),     FOREIGN KEY (school_id) REFERENCES School(school_id) ) [42101-224]
+2024-04-23 00:49:19.840942-04:00 jdbc[5]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "STUDENTS" ya existe
+Table "STUDENTS" already exists; SQL statement:
+CREATE TABLE Students (     student_id INT PRIMARY KEY AUTO_INCREMENT,     school_id INT,     student_name VARCHAR(100) NOT NULL,     grade_level VARCHAR(20),     FOREIGN KEY (school_id) REFERENCES School(school_id) ) [42101-224]
+2024-04-23 00:49:19.841942-04:00 jdbc[5]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "CLASSES" ya existe
+Table "CLASSES" already exists; SQL statement:
+CREATE TABLE Classes (     class_id INT PRIMARY KEY AUTO_INCREMENT,     teacher_id INT,     class_name VARCHAR(100),     schedule VARCHAR(50),     FOREIGN KEY (teacher_id) REFERENCES Teachers(teacher_id) ) [42101-224]
+2024-04-23 00:49:19.842943-04:00 jdbc[5]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Sequence "ENROLLMENT_SEQUENCE" ya existe
+Sequence "ENROLLMENT_SEQUENCE" already exists; SQL statement:
+CREATE SEQUENCE enrollment_sequence START WITH 1 INCREMENT BY 1 [90035-224]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:644)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.command.ddl.CreateSequence.update(CreateSequence.java:53)
+	at org.h2.command.ddl.SchemaOwnerCommand.update(SchemaOwnerCommand.java:33)
+	at org.h2.command.CommandContainer.update(CommandContainer.java:169)
+	at org.h2.command.Command.executeUpdate(Command.java:256)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:262)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:231)
+	at io.agroal.pool.wrapper.StatementWrapper.execute(StatementWrapper.java:235)
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80)
+	at org.hibernate.tool.schema.internal.Helper.applySqlString(Helper.java:233)
+	at org.hibernate.tool.schema.internal.Helper.applyScript(Helper.java:255)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.applyImportFiles(SchemaCreatorImpl.java:650)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.applyImportSources(SchemaCreatorImpl.java:569)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.performCreation(SchemaCreatorImpl.java:184)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.doCreation(SchemaCreatorImpl.java:142)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.doCreation(SchemaCreatorImpl.java:118)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:254)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$5(SchemaManagementToolCoordinator.java:143)
+	at java.base/java.util.HashMap.forEach(HashMap.java:1421)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:140)
+	at io.quarkus.hibernate.orm.runtime.observers.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:21)
+	at org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:35)
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:293)
+	at io.quarkus.hibernate.orm.runtime.boot.FastBootEntityManagerFactoryBuilder.build(FastBootEntityManagerFactoryBuilder.java:84)
+	at io.quarkus.hibernate.orm.runtime.FastBootHibernatePersistenceProvider.createEntityManagerFactory(FastBootHibernatePersistenceProvider.java:74)
+	at jakarta.persistence.Persistence.createEntityManagerFactory(Persistence.java:80)
+	at jakarta.persistence.Persistence.createEntityManagerFactory(Persistence.java:55)
+	at io.quarkus.hibernate.orm.runtime.JPAConfig$LazyPersistenceUnit.get(JPAConfig.java:156)
+	at io.quarkus.hibernate.orm.runtime.JPAConfig$1.run(JPAConfig.java:64)
+	at java.base/java.lang.Thread.run(Thread.java:842)
+2024-04-23 00:49:19.844941-04:00 jdbc[5]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "CREATE TABLE Enrollments (     enrollment_id INT PRIMARY KEY [*]DEFAULT NEXTVAL('enrollment_sequence'),     student_id INT,     class_id INT,     enrollment_date DATE,     FOREIGN KEY (student_id) REFERENCES Students(student_id),     FOREIGN KEY (class_id) REFERENCES Classes(class_id) )"; se esperaba "HASH, CONSTRAINT, COMMENT, UNIQUE, NOT NULL, CHECK, REFERENCES, ,, )"
+Syntax error in SQL statement "CREATE TABLE Enrollments (     enrollment_id INT PRIMARY KEY [*]DEFAULT NEXTVAL('enrollment_sequence'),     student_id INT,     class_id INT,     enrollment_date DATE,     FOREIGN KEY (student_id) REFERENCES Students(student_id),     FOREIGN KEY (class_id) REFERENCES Classes(class_id) )"; expected "HASH, CONSTRAINT, COMMENT, UNIQUE, NOT NULL, CHECK, REFERENCES, ,, )"; SQL statement:
+CREATE TABLE Enrollments (     enrollment_id INT PRIMARY KEY DEFAULT NEXTVAL('enrollment_sequence'),     student_id INT,     class_id INT,     enrollment_date DATE,     FOREIGN KEY (student_id) REFERENCES Students(student_id),     FOREIGN KEY (class_id) REFERENCES Classes(class_id) ) [42001-224]
+2024-04-23 00:49:19.849944-04:00 jdbc[5]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Columna "CLASS_ID" no encontrada
+Column "CLASS_ID" not found; SQL statement:
+INSERT INTO Enrollments (student_id, class_id, enrollment_date) SELECT     ROUND(RANDOM() * 29 + 1) AS student_id,     ROUND(RANDOM() * 9 + 1) AS class_id,     DATEADD('DAY', ROUND(RANDOM() * DATEDIFF('DAY', '2024-01-01', '2024-12-31')), '2024-01-01') AS enrollment_date FROM     SYSTEM_RANGE(1, 100) [42122-224]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:514)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.table.Table.getColumn(Table.java:759)
+	at org.h2.command.Parser.parseColumn(Parser.java:1190)
+	at org.h2.command.Parser.parseColumnList(Parser.java:1175)
+	at org.h2.command.Parser.parseInsert(Parser.java:1549)
+	at org.h2.command.Parser.parsePrepared(Parser.java:719)
+	at org.h2.command.Parser.parse(Parser.java:592)
+	at org.h2.command.Parser.parse(Parser.java:564)
+	at org.h2.command.Parser.prepareCommand(Parser.java:483)
+	at org.h2.engine.SessionLocal.prepareLocal(SessionLocal.java:639)
+	at org.h2.engine.SessionLocal.prepareCommand(SessionLocal.java:559)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1166)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:245)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:231)
+	at io.agroal.pool.wrapper.StatementWrapper.execute(StatementWrapper.java:235)
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80)
+	at org.hibernate.tool.schema.internal.Helper.applySqlString(Helper.java:233)
+	at org.hibernate.tool.schema.internal.Helper.applyScript(Helper.java:255)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.applyImportFiles(SchemaCreatorImpl.java:650)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.applyImportSources(SchemaCreatorImpl.java:569)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.performCreation(SchemaCreatorImpl.java:184)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.doCreation(SchemaCreatorImpl.java:142)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.doCreation(SchemaCreatorImpl.java:118)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:254)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$5(SchemaManagementToolCoordinator.java:143)
+	at java.base/java.util.HashMap.forEach(HashMap.java:1421)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:140)
+	at io.quarkus.hibernate.orm.runtime.observers.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:21)
+	at org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:35)
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:293)
+	at io.quarkus.hibernate.orm.runtime.boot.FastBootEntityManagerFactoryBuilder.build(FastBootEntityManagerFactoryBuilder.java:84)
+	at io.quarkus.hibernate.orm.runtime.FastBootHibernatePersistenceProvider.createEntityManagerFactory(FastBootHibernatePersistenceProvider.java:74)
+	at jakarta.persistence.Persistence.createEntityManagerFactory(Persistence.java:80)
+	at jakarta.persistence.Persistence.createEntityManagerFactory(Persistence.java:55)
+	at io.quarkus.hibernate.orm.runtime.JPAConfig$LazyPersistenceUnit.get(JPAConfig.java:156)
+	at io.quarkus.hibernate.orm.runtime.JPAConfig$1.run(JPAConfig.java:64)
+	at java.base/java.lang.Thread.run(Thread.java:842)
+2024-04-23 20:53:55.092838-04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "SCHOOL" ya existe
+Table "SCHOOL" already exists; SQL statement:
+CREATE TABLE School (     school_id INT PRIMARY KEY AUTO_INCREMENT,     school_name VARCHAR(100) NOT NULL,     address VARCHAR(255),     phone_number VARCHAR(20) ) [42101-224]
+2024-04-23 20:53:55.104395-04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "TEACHERS" ya existe
+Table "TEACHERS" already exists; SQL statement:
+CREATE TABLE Teachers (     teacher_id INT PRIMARY KEY AUTO_INCREMENT,     school_id INT,     teacher_name VARCHAR(100) NOT NULL,     subject_taught VARCHAR(100),     FOREIGN KEY (school_id) REFERENCES School(school_id) ) [42101-224]
+2024-04-23 20:53:55.105407-04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "STUDENTS" ya existe
+Table "STUDENTS" already exists; SQL statement:
+CREATE TABLE Students (     student_id INT PRIMARY KEY AUTO_INCREMENT,     school_id INT,     student_name VARCHAR(100) NOT NULL,     grade_level VARCHAR(20),     FOREIGN KEY (school_id) REFERENCES School(school_id) ) [42101-224]
+2024-04-23 20:53:55.108922-04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "CLASSES" ya existe
+Table "CLASSES" already exists; SQL statement:
+CREATE TABLE Classes (     class_id INT PRIMARY KEY AUTO_INCREMENT,     teacher_id INT,     class_name VARCHAR(100),     schedule VARCHAR(50),     FOREIGN KEY (teacher_id) REFERENCES Teachers(teacher_id) ) [42101-224]
+2024-04-23 20:53:55.110920-04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Sequence "ENROLLMENT_SEQUENCE" ya existe
+Sequence "ENROLLMENT_SEQUENCE" already exists; SQL statement:
+CREATE SEQUENCE enrollment_sequence START WITH 1 INCREMENT BY 1 [90035-224]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:644)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.command.ddl.CreateSequence.update(CreateSequence.java:53)
+	at org.h2.command.ddl.SchemaOwnerCommand.update(SchemaOwnerCommand.java:33)
+	at org.h2.command.CommandContainer.update(CommandContainer.java:169)
+	at org.h2.command.Command.executeUpdate(Command.java:256)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:262)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:231)
+	at io.agroal.pool.wrapper.StatementWrapper.execute(StatementWrapper.java:235)
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80)
+	at org.hibernate.tool.schema.internal.Helper.applySqlString(Helper.java:233)
+	at org.hibernate.tool.schema.internal.Helper.applyScript(Helper.java:255)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.applyImportFiles(SchemaCreatorImpl.java:650)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.applyImportSources(SchemaCreatorImpl.java:569)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.performCreation(SchemaCreatorImpl.java:184)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.doCreation(SchemaCreatorImpl.java:142)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.doCreation(SchemaCreatorImpl.java:118)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:254)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$5(SchemaManagementToolCoordinator.java:143)
+	at java.base/java.util.HashMap.forEach(HashMap.java:1421)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:140)
+	at io.quarkus.hibernate.orm.runtime.observers.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:21)
+	at org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:35)
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:293)
+	at io.quarkus.hibernate.orm.runtime.boot.FastBootEntityManagerFactoryBuilder.build(FastBootEntityManagerFactoryBuilder.java:84)
+	at io.quarkus.hibernate.orm.runtime.FastBootHibernatePersistenceProvider.createEntityManagerFactory(FastBootHibernatePersistenceProvider.java:74)
+	at jakarta.persistence.Persistence.createEntityManagerFactory(Persistence.java:80)
+	at jakarta.persistence.Persistence.createEntityManagerFactory(Persistence.java:55)
+	at io.quarkus.hibernate.orm.runtime.JPAConfig$LazyPersistenceUnit.get(JPAConfig.java:156)
+	at io.quarkus.hibernate.orm.runtime.JPAConfig$1.run(JPAConfig.java:64)
+	at java.base/java.lang.Thread.run(Thread.java:842)
+2024-04-23 20:53:55.113437-04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "CREATE TABLE Enrollments (     enrollment_id INT PRIMARY KEY [*]DEFAULT NEXTVAL('enrollment_sequence'),     student_id INT,     class_id INT,     enrollment_date DATE,     FOREIGN KEY (student_id) REFERENCES Students(student_id),     FOREIGN KEY (class_id) REFERENCES Classes(class_id) )"; se esperaba "HASH, CONSTRAINT, COMMENT, UNIQUE, NOT NULL, CHECK, REFERENCES, ,, )"
+Syntax error in SQL statement "CREATE TABLE Enrollments (     enrollment_id INT PRIMARY KEY [*]DEFAULT NEXTVAL('enrollment_sequence'),     student_id INT,     class_id INT,     enrollment_date DATE,     FOREIGN KEY (student_id) REFERENCES Students(student_id),     FOREIGN KEY (class_id) REFERENCES Classes(class_id) )"; expected "HASH, CONSTRAINT, COMMENT, UNIQUE, NOT NULL, CHECK, REFERENCES, ,, )"; SQL statement:
+CREATE TABLE Enrollments (     enrollment_id INT PRIMARY KEY DEFAULT NEXTVAL('enrollment_sequence'),     student_id INT,     class_id INT,     enrollment_date DATE,     FOREIGN KEY (student_id) REFERENCES Students(student_id),     FOREIGN KEY (class_id) REFERENCES Classes(class_id) ) [42001-224]
+2024-04-23 20:53:55.137543-04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Columna "CLASS_ID" no encontrada
+Column "CLASS_ID" not found; SQL statement:
+INSERT INTO Enrollments (student_id, class_id, enrollment_date) SELECT     ROUND(RANDOM() * 29 + 1) AS student_id,     ROUND(RANDOM() * 9 + 1) AS class_id,     DATEADD('DAY', ROUND(RANDOM() * DATEDIFF('DAY', '2024-01-01', '2024-12-31')), '2024-01-01') AS enrollment_date FROM     SYSTEM_RANGE(1, 100) [42122-224]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:514)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.table.Table.getColumn(Table.java:759)
+	at org.h2.command.Parser.parseColumn(Parser.java:1190)
+	at org.h2.command.Parser.parseColumnList(Parser.java:1175)
+	at org.h2.command.Parser.parseInsert(Parser.java:1549)
+	at org.h2.command.Parser.parsePrepared(Parser.java:719)
+	at org.h2.command.Parser.parse(Parser.java:592)
+	at org.h2.command.Parser.parse(Parser.java:564)
+	at org.h2.command.Parser.prepareCommand(Parser.java:483)
+	at org.h2.engine.SessionLocal.prepareLocal(SessionLocal.java:639)
+	at org.h2.engine.SessionLocal.prepareCommand(SessionLocal.java:559)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1166)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:245)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:231)
+	at io.agroal.pool.wrapper.StatementWrapper.execute(StatementWrapper.java:235)
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80)
+	at org.hibernate.tool.schema.internal.Helper.applySqlString(Helper.java:233)
+	at org.hibernate.tool.schema.internal.Helper.applyScript(Helper.java:255)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.applyImportFiles(SchemaCreatorImpl.java:650)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.applyImportSources(SchemaCreatorImpl.java:569)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.performCreation(SchemaCreatorImpl.java:184)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.doCreation(SchemaCreatorImpl.java:142)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.doCreation(SchemaCreatorImpl.java:118)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:254)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$5(SchemaManagementToolCoordinator.java:143)
+	at java.base/java.util.HashMap.forEach(HashMap.java:1421)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:140)
+	at io.quarkus.hibernate.orm.runtime.observers.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:21)
+	at org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:35)
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:293)
+	at io.quarkus.hibernate.orm.runtime.boot.FastBootEntityManagerFactoryBuilder.build(FastBootEntityManagerFactoryBuilder.java:84)
+	at io.quarkus.hibernate.orm.runtime.FastBootHibernatePersistenceProvider.createEntityManagerFactory(FastBootHibernatePersistenceProvider.java:74)
+	at jakarta.persistence.Persistence.createEntityManagerFactory(Persistence.java:80)
+	at jakarta.persistence.Persistence.createEntityManagerFactory(Persistence.java:55)
+	at io.quarkus.hibernate.orm.runtime.JPAConfig$LazyPersistenceUnit.get(JPAConfig.java:156)
+	at io.quarkus.hibernate.orm.runtime.JPAConfig$1.run(JPAConfig.java:64)
+	at java.base/java.lang.Thread.run(Thread.java:842)
