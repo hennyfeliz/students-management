@@ -17,6 +17,7 @@ import org.acme.pagination.PagedResult;
 import org.jboss.logging.Logger;
 
 import java.util.List;
+import java.util.Objects;
 
 @Path("class")
 @ApplicationScoped
@@ -34,7 +35,8 @@ public class ClassResource {
     ) {
         Long totalCount = Class.count();
         size = (size == null) ? 10 : size;
-        page = (page == null) ? 1 : page;
+        page = (page == null) ? 0 : page;
+        sort = (Objects.equals(sort, "")) ? "className" : sort;
 
         return Response.ok(new PagedResult<>(Class.findAll(Sort.by((sort == null) ? "className" : sort))
                 .page(Page.of((page == null) ? 0 : page, (size == null) ? 10 : size))
