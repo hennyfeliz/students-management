@@ -2,7 +2,6 @@ package org.acme.entities;
 
 import com.fasterxml.jackson.annotation.*;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
-import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -41,6 +40,10 @@ public class School extends PanacheEntityBase {
     @JsonIgnoreProperties("school")
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     public List<Student> students;
+
+    public static List<PanacheEntityBase> findBySchoolName(String schoolName) {
+        return find("schoolName", schoolName).list();
+    }
 
 
 
