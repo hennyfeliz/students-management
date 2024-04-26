@@ -5,10 +5,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.panache.common.Page;
 
 import io.quarkus.panache.common.Sort;
-import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -21,11 +21,9 @@ import jakarta.ws.rs.ext.Provider;
 import org.acme.entities.School;
 import org.acme.pagination.PagedResult;
 import org.jboss.logging.Logger;
-import org.jboss.resteasy.reactive.RestQuery;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Path("school")
 @ApplicationScoped
@@ -36,34 +34,46 @@ public class SchoolResource {
     private static final Logger LOGGER = Logger.getLogger(SchoolResource.class.getName());
 
 
+//    @GET
+//    public Response listAll(
+//            @QueryParam("schoolName") String schoolName,
+//
+//            @QueryParam("page") Integer page,
+//            @QueryParam("size") Integer size,
+//            @QueryParam("sort") String sort
+//    ) {
+//        Long totalCount = School.count();
+//
+//        schoolName = (schoolName == null) ? "" : schoolName;
+//
+//        size = (size == null) ? 10 : size;
+//        page = (page == null) ? 0 : page;
+//        sort = (Objects.equals(sort, "")) ? "schoolName" : sort;
+//
+//        return Response.ok(new PagedResult<>(School.findAll(Sort.by((sort == null) ? "schoolName" : sort))
+//                .page(Page.of((page == null) ? 0 : page, (size == null) ? 10 : size))
+//                .list(),
+//                totalCount,
+//                (int) Math.ceil((double) totalCount / size),
+//                page > 0,
+//                (page + 1) * size < totalCount)).build();
+//    }
+
+    @Path("{schoolName}")
     @GET
-    public Response listAll(
-            @QueryParam("page") Integer page,
-            @QueryParam("size") Integer size,
-            @QueryParam("sort") String sort
-    ) {
-        Long totalCount = School.count();
-        size = (size == null) ? 10 : size;
-        page = (page == null) ? 0 : page;
-        sort = (Objects.equals(sort, "")) ? "schoolName" : sort;
-
-        return Response.ok(new PagedResult<>(School.findAll(Sort.by((sort == null) ? "schoolName" : sort))
-                .page(Page.of((page == null) ? 0 : page, (size == null) ? 10 : size))
-                .list(),
-                totalCount,
-                (int) Math.ceil((double) totalCount / size),
-                page > 0,
-                (page + 1) * size < totalCount)).build();
+    public List<PanacheEntityBase> getSingle(@QueryParam("schoolName") String schoolName) {
+        return School.findBySchoolName(schoolName);
     }
 
-    @Path("{id}")
-    public School getSingle(Long id) {
-        School entity = School.findById(id);
-        if (entity == null) {
-            throw new WebApplicationException("School with id of " + id + " does not exist.", 404);
-        }
-        return entity;
-    }
+
+//    @Path("{id}")
+//    public School getSingle(Long id) {
+//        School entity = School.findById(id);
+//        if (entity == null) {
+//            throw new WebApplicationException("School with id of " + id + " does not exist.", 404);
+//        }
+//        return entity;
+//    }
 
     @POST
     @Transactional
