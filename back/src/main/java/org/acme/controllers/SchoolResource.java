@@ -11,6 +11,7 @@ import io.quarkus.panache.common.Page;
 import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -22,14 +23,15 @@ import org.acme.entities.School;
 import org.acme.pagination.PagedResult;
 import org.jboss.logging.Logger;
 
-import java.util.List;
-import java.util.Objects;
 
 @Path("school")
 @ApplicationScoped
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class SchoolResource {
+
+    @Inject
+    EntityManager entityManager;
 
     private static final Logger LOGGER = Logger.getLogger(SchoolResource.class.getName());
 
@@ -59,21 +61,16 @@ public class SchoolResource {
 //                (page + 1) * size < totalCount)).build();
 //    }
 
-    @Path("{schoolName}")
+
     @GET
-    public List<PanacheEntityBase> getSingle(@QueryParam("schoolName") String schoolName) {
-        return School.findBySchoolName(schoolName);
+    @Path("{id}")
+    public School getSingle(Long id) {
+        School entity = entityManager.find(School.class, id);
+        if (entity == null) {
+            throw new WebApplicationException("School with id of " + id + " does not exist.", 404);
+        }
+        return entity;
     }
-
-
-//    @Path("{id}")
-//    public School getSingle(Long id) {
-//        School entity = School.findById(id);
-//        if (entity == null) {
-//            throw new WebApplicationException("School with id of " + id + " does not exist.", 404);
-//        }
-//        return entity;
-//    }
 
     @POST
     @Transactional
