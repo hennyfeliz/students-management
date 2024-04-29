@@ -23,6 +23,9 @@ import org.acme.entities.School;
 import org.acme.pagination.PagedResult;
 import org.jboss.logging.Logger;
 
+import java.util.List;
+import java.util.Objects;
+
 
 @Path("school")
 @ApplicationScoped
@@ -36,40 +39,31 @@ public class SchoolResource {
     private static final Logger LOGGER = Logger.getLogger(SchoolResource.class.getName());
 
 
-//    @GET
-//    public Response listAll(
-//            @QueryParam("schoolName") String schoolName,
-//
-//            @QueryParam("page") Integer page,
-//            @QueryParam("size") Integer size,
-//            @QueryParam("sort") String sort
-//    ) {
-//        Long totalCount = School.count();
-//
-//        schoolName = (schoolName == null) ? "" : schoolName;
-//
-//        size = (size == null) ? 10 : size;
-//        page = (page == null) ? 0 : page;
-//        sort = (Objects.equals(sort, "")) ? "schoolName" : sort;
-//
-//        return Response.ok(new PagedResult<>(School.findAll(Sort.by((sort == null) ? "schoolName" : sort))
-//                .page(Page.of((page == null) ? 0 : page, (size == null) ? 10 : size))
-//                .list(),
-//                totalCount,
-//                (int) Math.ceil((double) totalCount / size),
-//                page > 0,
-//                (page + 1) * size < totalCount)).build();
-//    }
+    @GET
+    public Response listAll(
+            @QueryParam("page") Integer page,
+            @QueryParam("size") Integer size,
+            @QueryParam("sort") String sort
+    ) {
+        Long totalCount = School.count();
+        size = (size == null) ? 10 : size;
+        page = (page == null) ? 0 : page;
+        sort = (Objects.equals(sort, "")) ? "schoolName" : sort;
+
+        return Response.ok(new PagedResult<>(School.findAll(Sort.by((sort == null) ? "schoolName" : sort))
+                .page(Page.of((page == null) ? 0 : page, (size == null) ? 10 : size))
+                .list(),
+                totalCount,
+                (int) Math.ceil((double) totalCount / size),
+                page > 0,
+                (page + 1) * size < totalCount)).build();
+    }
 
 
     @GET
-    @Path("{id}")
-    public School getSingle(Long id) {
-        School entity = entityManager.find(School.class, id);
-        if (entity == null) {
-            throw new WebApplicationException("School with id of " + id + " does not exist.", 404);
-        }
-        return entity;
+    @Path("{schoolName}")
+    public List<School> findByNameContaining(@QueryParam("schoolName") String schoolName) {
+        return School.find("school_name LIKE ?1", "%" + schoolName + "%").list();
     }
 
     @POST
