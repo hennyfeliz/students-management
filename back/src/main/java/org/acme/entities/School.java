@@ -41,10 +41,9 @@ public class School extends PanacheEntityBase {
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     public List<Student> students;
 
-    public static List<PanacheEntityBase> findBySchoolName(String schoolName) {
-        return find("schoolName", schoolName).list();
+
+    public static List<School> findBySchoolNameContaining(String schoolName) {
+        return list("school_name LIKE ?1", "%" + schoolName + "%");
     }
-
-
 
 }
