@@ -1,0 +1,301 @@
+/* TABLE COMPONENT */
+
+.table-container {
+  margin: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.data-table {
+  border-collapse: collapse;
+  margin: auto;
+  width: 90%;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.375rem;
+  overflow: hidden;
+  min-height: 750px;
+}
+
+.data-table th,
+.data-table td {
+  padding: 1rem;
+  text-align: left;
+}
+
+.data-table th {
+  /* background-color: #f3f4f6; */
+  background-color: var(--light);
+  color: var(--dark);
+}
+
+.data-table tbody tr:nth-child(even) {
+  /* background-color: #ffffff; */
+  background-color: var(--light);
+  color: var(--dark);
+}
+
+.data-table tbody tr:nth-child(odd) {
+  /* background-color: #edf2f7; */
+  color: var(--dark);
+  background-color: var(--grey);
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.status.active {
+  background-color: #34d399;
+  color: #ffffff;
+}
+
+.status.inactive {
+  background-color: #ef4444;
+  color: #ffffff;
+}
+
+.trash-icon {
+  cursor: pointer;
+  border-radius: 4px;
+  stroke: var(--dark);
+  padding: 2px;
+  transition: background-color 0.3s;
+}
+
+.trash-icon:hover {
+  background-color: #ffc6c6;
+}
+
+.data-table > thead > tr > th > * {
+  vertical-align: middle;
+  margin: 0 4px;
+}
+
+.data-table > thead > tr > th {
+  cursor: pointer;
+  transition: background-color 0.3s color 0.3s;
+}
+
+/* .data-table > thead > tr > th:hover {*/
+.data-table > thead > tr > th:hover,
+.table-header-icon > g > path:hover {
+  cursor: pointer;
+  background-color: #0e749015;
+  color: #0a637ca4;
+  stroke: #0a637ca4;
+}
+
+/* PAGINATOR */
+
+.paginator {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.paginagor-container > span {
+  padding: 4px;
+  border-radius: 8px;
+  background-color: #dbdbdb;
+  margin: 4px;
+}
+
+.linea-horizontal {
+  border: none;
+  border-top: 1px solid black;
+  width: 100%;
+}
+
+.paginagor-container {
+  width: 90%;
+  margin: 0 auto;
+  align-items: center;
+  background-color: var(--light);
+  color: #6b7280;
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 24px;
+  grid-area: auto;
+  justify-content: center;
+  padding: 7px 20px;
+}
+
+.pagination-numbers {
+  color: #6b7280;
+  grid-area: auto;
+}
+
+.pag-2 {
+  display: flex;
+  flex-direction: column;
+}
+
+.pag-2 > :nth-child(2) {
+  font-size: 14px;
+}
+
+.inactive-button {
+  display: none;
+}
+
+.paginagor-container > button {
+  font-size: 1rem;
+  box-sizing: border-box;
+  text-align: left;
+  padding: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  user-select: none;
+  overflow: hidden;
+  position: relative;
+  background-color: transparent;
+  border: 0 none;
+  color: #6b7280;
+  min-width: 3rem;
+  height: 3rem;
+  margin: 0.143rem;
+  transition: box-shadow 0.2s;
+  border-radius: 50%;
+  font-weight: 700;
+  transition: background-color 0.3s;
+}
+
+.paginagor-container > button:hover {
+  background-color: #dbdbdb8a;
+}
+
+.paginator-numRecordsPage {
+  border: 3px solid #34d399;
+  outline: none;
+  width: 32px;
+  font-weight: 700;
+  padding-right: 0;
+}
+
+/* TRASH ICON */
+
+.trash-icon {
+  cursor: pointer;
+  border-radius: 4px;
+  padding: 2px;
+  transition: background-color 0.3s;
+}
+
+.trash-icon:hover {
+  background-color: #ffc6c6;
+}
+
+/* EDIT ICON */
+
+/* CHECKBOX STYLES */
+
+input[type="checkbox"] {
+  z-index: 999;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #6b728069;
+  border-radius: 5px;
+  background-color: transparent;
+  transition: background-color 0.3s ease;
+}
+
+input[type="checkbox"]:checked {
+  background-color: #7999dad7;
+  border-color: #6b728069;
+}
+
+.elemento-tabla {
+  cursor: pointer;
+  transition: border 0.3s;
+  border: 1px solid transparent;
+}
+
+.elemento-tabla:hover {
+  border: 1px solid rgba(0, 0, 0, 0.301);
+}
+
+/* EXPORT CSV BUTTON */
+
+.export-csv-button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #6b728069;
+  border-radius: 8px;
+  cursor: pointer;
+  color: #6b7280;
+  width: 140px;
+  height: 40px;
+  transition: border 0.3s;
+}
+
+.export-csv-button > * {
+  margin: 0 14px;
+}
+
+/* KEYWORD INPUT */
+
+.table-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-weight: 400;
+  justify-content: space-between;
+  padding: 20px 200px;
+  margin: 14px 5%;
+  border-radius: 4px;
+  background-color: #f3f4f6;
+}
+
+.keyword-input-text {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  /* border: 2px solid #6b728069; */
+  border: 2px solid var(--dark-light);
+  color: var(--light);
+  border-radius: 8px;
+  transition: border 0.3s;
+}
+
+.input-large {
+  width: 600px;
+  height: 40px;
+}
+
+.input-short {
+  width: 200px;
+  height: 34px;
+}
+
+.keyword-input-text:hover,
+.export-csv-button:hover {
+  border: 2px solid rgba(0, 117, 53, 0.788);
+}
+
+.keyword-input-text > * {
+  margin: 0 4px;
+}
+
+.keyword-input-text > input {
+  all: unset;
+  border: none;
+  width: 100%;
+  height: 100%;
+}
