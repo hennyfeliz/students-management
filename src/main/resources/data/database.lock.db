@@ -1,6 +1,0 @@
-#FileLock
-#Tue Apr 23 20:53:54 AST 2024
-server=192.168.1.25\:53353
-hostName=Henny.lan
-method=file
-id=18f0d983e59897c06f3d1f49671ff33398a81583453
