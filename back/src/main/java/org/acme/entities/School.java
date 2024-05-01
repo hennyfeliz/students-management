@@ -5,6 +5,7 @@ import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -42,8 +43,12 @@ public class School extends PanacheEntityBase {
     public List<Student> students;
 
 
-    public static List<School> findBySchoolNameContaining(String schoolName) {
-        return list("school_name LIKE ?1", "%" + schoolName + "%");
+    public static List<School> findBySchoolNameContaining(String nameFragment) {
+        return list("schoolName LIKE ?1", "%" + nameFragment + "%");
+    }
+
+    public static List<School> schoolFilter(String schoolName, String address, String phoneNumber) {
+
     }
 
 }

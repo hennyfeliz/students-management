@@ -50,8 +50,11 @@ public class SchoolResource {
         page = (page == null) ? 0 : page;
         sort = (Objects.equals(sort, "")) ? "schoolName" : sort;
 
-        return Response.ok(new PagedResult<>(School.findAll(Sort.by((sort == null) ? "schoolName" : sort))
-                .page(Page.of((page == null) ? 0 : page, (size == null) ? 10 : size))
+        return Response.ok(
+        new PagedResult<>(
+        School.findAll(Sort.by((sort == null) ? "schoolName" : sort))
+                .page(Page.of((page == null) ? 0 : page,
+                        (size == null) ? 10 : size))
                 .list(),
                 totalCount,
                 (int) Math.ceil((double) totalCount / size),
@@ -61,9 +64,9 @@ public class SchoolResource {
 
 
     @GET
-    @Path("{schoolName}")
-    public List<School> findByNameContaining(@QueryParam("schoolName") String schoolName) {
-        return School.find("school_name LIKE ?1", "%" + schoolName + "%").list();
+    public List<School> getSingle() {
+//        return School.find("school_name LIKE ?1", "%" + schoolName + "%").list();
+        return School.findBySchoolNameContaining("Greenfield");
     }
 
     @POST
