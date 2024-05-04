@@ -177,6 +177,10 @@ export const Table = ({ datatableIndex }) => {
         </tbody>
       </table>
       <div className='paginagor-container pag-2' >
+        <div>
+          <span>Ver seleccionado</span>
+          <span>Eliminar seleccionados</span>
+        </div>
         <div className="paginagor-container">
           <button>
             <LeftLinedArrow />
