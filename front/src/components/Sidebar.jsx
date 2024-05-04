@@ -3,6 +3,7 @@ import { useState } from 'react'
 import '../styles/Styles.css'
 import { SidebarItems } from '../utils/Helper'
 import { BRRDIcon } from '../assets/icons/Icons'
+import { Link } from 'react-router-dom'
 
 export const Sidebar = ({ datatableIndexHandler, sidebar }) => {
 
@@ -42,10 +43,12 @@ export const Sidebar = ({ datatableIndexHandler, sidebar }) => {
       </ul>
       <ul className="side-menu logout-side-menu-button">
         <li>
-          <a href="#" className="logout">
+          {/* <a href="#" className="logout"> */}
+          <Link to="/">
             <i className='bx bx-log-out-circle'></i>
             Logout
-          </a>
+          </Link>
+          {/* </a> */}
         </li>
       </ul>
     </div>
