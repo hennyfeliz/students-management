@@ -63,11 +63,11 @@ public class SchoolResource {
     }
 
 
-    @GET
-    public List<School> getSingle() {
-//        return School.find("school_name LIKE ?1", "%" + schoolName + "%").list();
-        return School.findBySchoolNameContaining("Greenfield");
-    }
+//    @GET
+//    public List<School> getSingle() {
+////        return School.find("school_name LIKE ?1", "%" + schoolName + "%").list();
+//        return School.findBySchoolNameContaining("Greenfield");
+//    }
 
     @POST
     @Transactional
