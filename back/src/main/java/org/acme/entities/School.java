@@ -47,8 +47,4 @@ public class School extends PanacheEntityBase {
         return list("schoolName LIKE ?1", "%" + nameFragment + "%");
     }
 
-    public static List<School> schoolFilter(String schoolName, String address, String phoneNumber) {
-
-    }
-
 }
