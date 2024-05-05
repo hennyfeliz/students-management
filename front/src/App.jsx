@@ -4,6 +4,8 @@ import { Routes, Route } from 'react-router-dom';
 import { Sidebar } from './components/Sidebar';
 import { MainTwo } from './components/MainTwo';
 import { useState } from 'react';
+import { Login } from './components/Login';
+
 
 function App() {
 
@@ -22,7 +24,7 @@ function App() {
     // <Datatable />
     <BrowserRouter>
       <Routes>
-        {/* <Route path='/' element={<Login />} /> */}
+        <Route path='/' element={<Login />} />
         <Route path='/users/*' element={
           <>
             {
