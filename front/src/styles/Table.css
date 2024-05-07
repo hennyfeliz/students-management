@@ -138,8 +138,38 @@
   flex-direction: column;
 }
 
-.pag-2 > :nth-child(2) {
+.pag-2 > :nth-child(3),
+.pag-2 > :nth-child(1) {
   font-size: 14px;
+}
+
+.pag-2 > :nth-child(1) {
+  display: flex;
+  flex-direction: row;
+}
+
+.pag-2 > :nth-child(1) > * {
+  cursor: pointer;
+  padding: 4px 14px;
+  margin: 0 10px;
+  border: 1px solid gray;
+  border-radius: 14px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.pag-2 > :nth-child(1) > :nth-child(2) {
+  border: 1px solid rgba(255, 0, 0, 0.356);
+  color: rgba(161, 0, 0, 0.692);
+}
+
+.pag-2 > :nth-child(1) > :nth-child(2):hover {
+  background-color: rgba(255, 0, 0, 0.582);
+  color: white;
+}
+
+.pag-2 > :nth-child(1) > :nth-child(1):hover {
+  background-color: rgba(0, 0, 0, 0.815);
+  color: white;
 }
 
 .inactive-button {
@@ -200,7 +230,9 @@
 
 /* CHECKBOX STYLES */
 
-input[type="checkbox"] {
+.data-table > thead > tr > th > input[type="checkbox"],
+.data-table > tbody > tr > td > input[type="checkbox"],
+.input-checkboxes {
   z-index: 999;
   cursor: pointer;
   appearance: none;
@@ -214,7 +246,14 @@ input[type="checkbox"] {
   transition: background-color 0.3s ease;
 }
 
-input[type="checkbox"]:checked {
+.input-checkboxes {
+  border: 2px solid #6e7b96bb;
+  background-color: white;
+}
+
+.data-table > thead > tr > th > input[type="checkbox"]:checked,
+.data-table > tbody > tr > td > input[type="checkbox"]:checked,
+.input-checkboxes:checked {
   background-color: #7999dad7;
   border-color: #6b728069;
 }
