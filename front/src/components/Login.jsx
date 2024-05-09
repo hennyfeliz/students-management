@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import '../styles/Login.css'
 import { useNavigate } from 'react-router-dom';
+import { EyeIcon } from '../assets/icons/Icons';
 
 
 export const Login = () => {
@@ -42,32 +43,29 @@ export const Login = () => {
       <div className='login'>
         <div className="login-card">
           <div className='login-icon'>
-            <svg width="92px" height="92px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" >
+            <h2>Bienvenido a su app</h2>
+            <span>Por favor, introduzca sus datos para entrar</span>
+            {/* <svg width="92px" height="92px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" >
               <circle cx="12" cy="9" r="3" stroke="#fff" strokeWidth="1.5" />
               <path d="M17.9691 20C17.81 17.1085 16.9247 15 11.9999 15C7.07521 15 6.18991 17.1085 6.03076 20" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" />
               <path d="M7 3.33782C8.47087 2.48697 10.1786 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 10.1786 2.48697 8.47087 3.33782 7" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" />
-            </svg>
+            </svg> */}
           </div>
           <div className="login-elements">
-            <span>USERNAME</span>
+            <span>Usuario</span>
             <input type="text" placeholder="Introduzca su usuario..." ref={email} />
-            <span>PASSWORD</span>
-            <input
-              type={passwordViewer ? 'text' : 'password'}
-              placeholder="Introduzca su contraseña"
-              ref={password}
-            />
-            <div>
+            <span>Contraseña</span>
+            <div className='password-input'>
               <input
-                className='input-checkboxes ch-gray'
-                type="checkbox"
-                checked={passwordViewer}
-                onChange={handleCheckboxChange}
+                type={passwordViewer ? 'text' : 'password'}
+                placeholder="Introduzca su contraseña"
+                ref={password}
               />
-              <label>mostrar contraseña</label>
+              <EyeIcon action={handleCheckboxChange} />
             </div>
           </div>
           <button className="login-button" onClick={handleSubmit}>Ingresar</button>
+          <span>Si no posee una cuenta para ingresar, <strong> contacte con soporte</strong></span>
         </div>
       </div>
     </div>
