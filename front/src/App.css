@@ -1,0 +1,14 @@
+@font-face {
+  font-family: "azeretmono";
+  src: url("../src/assets/fonts/azeretmono.ttf") format("truetype");
+  font-display: swap;
+}
+
+:root,
+body {
+  font-family: "azeretmono", Inter, system-ui, Avenir, Helvetica, Arial,
+    sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  margin: 0;
+}
