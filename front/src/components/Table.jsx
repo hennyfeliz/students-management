@@ -12,6 +12,7 @@ import { RightLinedArrow } from '../assets/icons/RightLinedArrow'
 import { ExportCSVIcon, MagnifierIcon, SortingArrow } from '../assets/icons/Icons'
 import { FilterInput } from './FilterInput'
 import Modal from './Modal'
+import { EditModal } from './EditModal'
 import { TableSchemes } from '../utils/TableSchema'
 
 export const Table = ({ datatableIndex }) => {
@@ -21,6 +22,9 @@ export const Table = ({ datatableIndex }) => {
   const [totalElements, setTotalElements] = useState(0)
 
   const [actualPage, setActualPage] = useState(1)
+
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedEditModalData, setSelectedEditModalData] = useState({});
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedModalData, setSelectedModalData] = useState({});
@@ -64,6 +68,16 @@ export const Table = ({ datatableIndex }) => {
     setIsModalOpen(false);
   };
 
+  const openEditModal = (element) => {
+    console.log("edit modal")
+    setSelectedEditModalData(element);
+    setIsEditModalOpen(true);
+  }
+
+  const closeEditModal = () => {
+    setIsEditModalOpen(false);
+  }
+
   const actualPageHandlerMenus = () => {
     if (numPage > 1) {
       setNumPage(numPage - 1);
@@ -97,6 +111,22 @@ export const Table = ({ datatableIndex }) => {
     return new Date(date).toLocaleString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' });
 
   }
+
+  const getPropertyValue = (obj, path) => {
+    const properties = path.split('.');
+    let value = obj;
+    for (const prop of properties) {
+      // eslint-disable-next-line no-prototype-builtins
+      if (value && value.hasOwnProperty(prop)) {
+        value = value[prop];
+      } else {
+        value = null;
+        break;
+      }
+    }
+    return value;
+  };
+
 
   return (
     <>
@@ -151,26 +181,31 @@ export const Table = ({ datatableIndex }) => {
           {
             data.map((item, index) => (
               <tr key={index} className='elemento-tabla'
-              // onClick={() =>
-              //   openModal(item)}
+
               >
                 <td>
                   <input type="checkbox" id={`checkbox-${item.id}`}
                     onChange={(event) => handleCheckboxChange(event, item.id)}
                     checked={collection.includes(item.id)} />
                 </td>
-                {
+                {TableSchemes[datatableIndex].table_body.map((property, index) => (
+                  <td key={index} onClick={() => openModal(item)}>
+                    {getPropertyValue(item, property)}
+                  </td>
+                ))}
+                {/* {
                   TableSchemes[datatableIndex].table_body.map((_item, _index) => (
-                    <td key={_index}>{item[_item]}</td>
+                    <td onClick={() =>
+                      openModal(item)} key={_index}>{item[_item]}</td>
                   ))
-                }
+                } */}
                 {/* <td>{dateFormatter(item.date)}</td> */}
                 <td><span className="status active">Activo</span></td>
                 <td>
                   {<TrashIcon width='30px' height='30px' />}
                 </td>
                 <td>
-                  {<EditIcon />}
+                  {<EditIcon action={openEditModal} item={item} datatableIndex={datatableIndex} />}
                 </td>
               </tr>
             ))}
@@ -214,6 +249,13 @@ export const Table = ({ datatableIndex }) => {
         isOpen={isModalOpen}
         closeModal={closeModal}
         data={selectedModalData}
+        datatableIndex={datatableIndex}
+      />
+      <EditModal
+        isEditOpen={isEditModalOpen}
+        closeEditModal={closeEditModal}
+        dataEdit={selectedEditModalData}
+        datatableIndex={datatableIndex}
       />
     </>
   )
