@@ -34,6 +34,7 @@ export const Table = ({ datatableIndex }) => {
   const [collection, setCollection] = useState([]);
 
   const handleCheckboxChange = (event, itemId) => {
+    console.log("checkbox")
     const isChecked = event.target.checked;
     if (isChecked) {
       setCollection([...collection, itemId]);
@@ -147,8 +148,12 @@ export const Table = ({ datatableIndex }) => {
         <thead>
           <tr>
             <th>
-              <input type="checkbox" id="thead-checkbox"
-                onChange={handleTheadCheckboxChange} />
+              <div className="cntr">
+                <input checked="true" type="checkbox" id="cbx" className="hidden-xs-up" />
+                <label htmlFor="cbx" className="cbx" onClick={handleTheadCheckboxChange}></label>
+              </div>
+              {/* <input type="checkbox" id="thead-checkbox" */}
+              {/* // onChange={handleTheadCheckboxChange} /> */}
             </th>
             {
               TableSchemes[datatableIndex].table_headers.map((item, index) => (
@@ -184,9 +189,29 @@ export const Table = ({ datatableIndex }) => {
 
               >
                 <td>
-                  <input type="checkbox" id={`checkbox-${item.id}`}
+                  <div className="cntr" onClick={(event) => handleCheckboxChange(event, item.id)}>
+                    <input checked={collection.includes(item.id)} type="checkbox" id="cbx" className="hidden-xs-up" onChange={(event) => handleCheckboxChange(event, item.id)} />
+                    <label htmlFor="cbx" className="cbx" onClick={(event) => handleCheckboxChange(event, item.id)}></label>
+                  </div>
+                  {/* <div className="cntr">
+                    <input
+                      // checked="" 
+                      type="checkbox" id="cbx"
+                      // type="checkbox"
+                      // id={`checkbox-${item.id}`}
+                      checked={collection.includes(item.id)}
+                      className="hidden-xs-up" />
+                    <label
+                      htmlFor="cbx"
+                      className="cbx"
+                      onChange={(event) => handleCheckboxChange(event, item.id)}
+                    ></label>
+                  </div> */}
+                  {/* <input 
+                    type="checkbox" 
+                    id={`checkbox-${item.id}`}
                     onChange={(event) => handleCheckboxChange(event, item.id)}
-                    checked={collection.includes(item.id)} />
+                    checked={collection.includes(item.id)} /> */}
                 </td>
                 {TableSchemes[datatableIndex].table_body.map((property, index) => (
                   <td key={index} onClick={() => openModal(item)}>
