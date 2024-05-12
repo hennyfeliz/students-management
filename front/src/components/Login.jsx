@@ -65,7 +65,7 @@ export const Login = () => {
             </div>
           </div>
           <button className="login-button" onClick={handleSubmit}>Ingresar</button>
-          <span>Si no posee una cuenta para ingresar, <strong> contacte con soporte</strong></span>
+          <p>Si no posee una cuenta para ingresar, <strong> contacte con soporte</strong></p>
         </div>
       </div>
     </div>
