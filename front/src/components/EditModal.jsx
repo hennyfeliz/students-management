@@ -1,9 +1,11 @@
+/* eslint-disable react/prop-types */
 import '../styles/EditModal.css'
 import '../styles/Table.css'
+import { TableSchemes } from '../utils/TableSchema'
 
 export const EditModal = ({ isEditOpen, closeEditModal, dataEdit, datatableIndex }) => {
 
-  const items = [{ item1: "123", content: "123" }, { item2: "123", content: "123" }, { item2: "123", content: "123" }, { item2: "123", content: "123" }, { item2: "123", content: "123" }]
+  // const items = [{ item1: "123", content: "123" }, { item2: "123", content: "123" }, { item2: "123", content: "123" }, { item2: "123", content: "123" }, { item2: "123", content: "123" }]
 
   return (
     <div
@@ -13,21 +15,21 @@ export const EditModal = ({ isEditOpen, closeEditModal, dataEdit, datatableIndex
         <div className="modal-content">
           <span>Editando de la información | <strong> Schools </strong></span>
           <hr />
-          <table className="data-table dt-edit">
-            <tbody>
-              {
-                items.map((item, index) => (
-                  <tr key={index}>
-                    <td>asd</td>
-                    <td>
-                      {/* {item.content} */}
-                      <input type="text" name="" id="" className='edit-modal-input' />
-                    </td>
-                  </tr>
-                ))
-              }
-            </tbody>
-          </table>
+          <div className='ed-elements'>
+            {
+              TableSchemes[datatableIndex].table_headers.map((item, index) => (
+                <>
+                  <span key={index}>
+                    {item}
+                  </span>
+                  <input type="text" placeholder="Introduzca su usuario..."
+                    value={Object.keys(dataEdit)[index + 1]}
+                  // value={dataEdit[index]}
+                  />
+                </>
+              ))
+            }
+          </div>
           <div className="buttons">
             <button className="modal-button gray" onClick={closeEditModal}>Cerrar</button>
             <button className="modal-button green" >Guardar</button>
