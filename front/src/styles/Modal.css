@@ -1,4 +1,4 @@
-.modal {
+.modal-info {
   position: fixed;
   top: 0;
   left: 0;
@@ -19,82 +19,87 @@
   opacity: 0;
   transition: visibility 0s linear 0.25s, opacity 0.25s;
 
-  &.open {
+  &.open-info {
     visibility: visible;
     opacity: 1;
     transition-delay: 0s;
   }
 
-  .product-content-information {
-    display: flex;
+  .content-information {
+    /* display: flex; */
     background-color: #f3f4f6;
     position: relative;
     width: 700px;
-    height: 340px;
+    height: auto;
+    min-height: 340px;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+  }
+}
 
-    .modal-content {
-      display: flex;
-      flex-direction: column;
+.modal-content {
+  display: flex;
+  flex-direction: column;
 
-      .buttons {
-        position: absolute;
-        bottom: 30px;
-        right: 30px;
-      }
+  .buttons {
+    position: absolute;
+    bottom: 30px;
+    right: 30px;
+  }
+}
 
-      .modal-button {
-        padding: 4px 70px;
-        font-weight: 600;
-        margin: 2px;
-        cursor: pointer;
-        /* border-radius: 2px; */
-        transition: color 0.2s, background 0.3s;
-        /* -webkit-border-radius: 4px;
+.modal-content > span:nth-child(1) {
+  color: rgba(0, 0, 0, 0.493);
+  margin: 10px auto;
+  font-size: 18px;
+}
+
+.edit-modal-input {
+  all: unset;
+  border: none;
+  width: 70%;
+  color: black;
+  margin-left: 90px;
+  height: 100%;
+  padding: 4px 14px;
+  border: 1px solid var(--dark-light);
+  border-radius: 8px;
+  transition: border 0.3s;
+}
+
+.dt-edit > tbody > tr > td {
+  /* text-align: end; */
+}
+
+hr {
+  margin: 20px auto;
+  width: 90%;
+}
+
+.modal-button {
+  padding: 4px 70px;
+  font-weight: 600;
+  margin: 2px;
+  cursor: pointer;
+  /* border-radius: 2px; */
+  transition: color 0.2s, background 0.3s;
+  /* -webkit-border-radius: 4px;
         -moz-border-radius: 4px;
         -ms-border-radius: 4px;
         -o-border-radius: 4px; */
-        -webkit-transition: background 0.3s;
-        -moz-transition: background 0.3s;
-        -ms-transition: background 0.3s;
-        -o-transition: background 0.3s;
-      }
+  -webkit-transition: background 0.3s;
+  -moz-transition: background 0.3s;
+  -ms-transition: background 0.3s;
+  -o-transition: background 0.3s;
+}
+.green:hover {
+  color: white;
+  background: #129c00;
+  border: 2px solid #129c00;
+}
 
-      .green:hover {
-        color: white;
-        background: #01318b;
-      }
-
-      .gray:hover {
-        color: white;
-        background: #383838;
-      }
-
-      > h1 {
-        margin: 10px 0 30px 0;
-      }
-
-      > * {
-        /* margin: 0 4px; */
-        height: 20px;
-      }
-
-      > p {
-        font-weight: 900;
-      }
-
-      > h2 {
-        margin-bottom: 20px;
-      }
-
-      .descripcion {
-        white-space: nowrap; /* Evita que el texto se divida en varias líneas */
-        overflow: hidden; /* Oculta el contenido que excede el contenedor */
-        text-overflow: ellipsis; /* Agrega "..." al final del texto truncado */
-        width: 100%; /* Asegura que el elemento ocupe todo el ancho disponible */
-      }
-    }
-  }
+.gray:hover {
+  color: white;
+  background: #383838;
 }
