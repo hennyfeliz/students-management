@@ -2,6 +2,8 @@
 import { useEffect, useState } from 'react'
 import '../styles/Styles.css'
 import '../styles/Header.css'
+import { LogoutIconn } from '../assets/icons/Icons';
+import { Notifications } from './Notifications';
 
 export const HeaderTwo = ({ sidebarHandler }) => {
 
@@ -30,10 +32,11 @@ export const HeaderTwo = ({ sidebarHandler }) => {
       </form>
       <input type="checkbox" id="theme-toggle" hidden onClick={darkHandler} />
       <label htmlFor="theme-toggle" className="theme-toggle"></label>
-      <a href="#" className="notif">
+      <Notifications />
+      {/* <a href="#" className="notif">
         <i className='bx bx-bell'></i>
         <span className="count">12</span>
-      </a>
+      </a> */}
       <a href="#" className="profile">
         <div className="menu-container">
           <label htmlFor="menu-checkbox" className="menu-toggler">
@@ -41,10 +44,28 @@ export const HeaderTwo = ({ sidebarHandler }) => {
           </label>
           <input type="checkbox" id="menu-checkbox" />
           <div className="menu">
-            <a href="">🤠 Vequero</a>
-            <a href="">😎 Lentes</a>
-            <a href="">💀 Esqueleto</a>
+            <a href="">
+              <i className='bx bx-objects-vertical-center'></i>
+              <p>Actividad</p>
+            </a>
+            <a href="">
+              <i className='bx bx-building-house'></i>
+              <p>
+                Organización
+              </p>
+            </a>
+            <a href="">
+              <i className='bx bx-cog'></i>
+              <p>
+                Configuración
+              </p>
+            </a>
             <hr style={{ width: '90%' }} />
+            <a href="">
+              <i className='bx bx-log-out-circle'></i>
+              {/* <LogoutIconn /> */}
+              {` Cerrar sesión`}
+            </a>
             {
               /*
             <Link to="/">
