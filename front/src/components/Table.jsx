@@ -34,21 +34,20 @@ export const Table = ({ datatableIndex }) => {
   const [collection, setCollection] = useState([]);
 
   const handleCheckboxChange = (event, itemId) => {
-    console.log("checkbox")
-    const isChecked = event.target.checked;
-    if (isChecked) {
-      setCollection([...collection, itemId]);
-    } else {
+    if (collection.includes(itemId)) {
       setCollection(collection.filter((id) => id !== itemId));
+    } else {
+      setCollection([...collection, itemId]);
     }
   };
 
-  const handleTheadCheckboxChange = (event) => {
-    const isChecked = event.target.checked;
-    if (isChecked) {
+  const handleTheadCheckboxChange = () => {
+    if (!allChecked) {
       setCollection(data.map((item) => item.id));
+      setAllChecked(!allChecked);
     } else {
       setCollection([]);
+      setAllChecked(!allChecked);
     }
   };
 
@@ -148,17 +147,21 @@ export const Table = ({ datatableIndex }) => {
         <thead>
           <tr>
             <th>
-              <div className="cntr">
-                <input checked="true" type="checkbox" id="cbx" className="hidden-xs-up" />
-                <label htmlFor="cbx" className="cbx" onClick={handleTheadCheckboxChange}></label>
-              </div>
+              <i
+                className={`bx bx${allChecked ? 's' : ''}-check-square`}
+                onClick={handleTheadCheckboxChange}>
+              </i>
+              {/* <div className="cntr">
+              <input checked="true" type="checkbox" id="cbx" className="hidden-xs-up" />
+              <label htmlFor="cbx" className="cbx" onClick={handleTheadCheckboxChange}></label>
+            </div> */}
               {/* <input type="checkbox" id="thead-checkbox" */}
               {/* // onChange={handleTheadCheckboxChange} /> */}
             </th>
             {
               TableSchemes[datatableIndex].table_headers.map((item, index) => (
                 <th key={index}
-                // onClick={() => sortHandler(index)}
+                  onClick={() => sortHandler(index)}
                 >
                   {item}
                   <SortingArrow />
@@ -189,10 +192,14 @@ export const Table = ({ datatableIndex }) => {
 
               >
                 <td>
-                  <div className="cntr" onClick={(event) => handleCheckboxChange(event, item.id)}>
+                  <i
+                    className={`bx bx${collection.includes(item.id) ? 's' : ''}-check-square`}
+                    onClick={(event) => handleCheckboxChange(event, item.id)}>
+                  </i>
+                  {/* <div className="cntr" onClick={(event) => handleCheckboxChange(event, item.id)}>
                     <input checked={collection.includes(item.id)} type="checkbox" id="cbx" className="hidden-xs-up" onChange={(event) => handleCheckboxChange(event, item.id)} />
-                    <label htmlFor="cbx" className="cbx" onClick={(event) => handleCheckboxChange(event, item.id)}></label>
-                  </div>
+                    <label htmlFor="cbx" className="cbx" onClick={(event) => handleCheckboxChange(event, item.id)}></label> */}
+                  {/* </div> */}
                   {/* <div className="cntr">
                     <input
                       // checked="" 
@@ -227,19 +234,36 @@ export const Table = ({ datatableIndex }) => {
                 {/* <td>{dateFormatter(item.date)}</td> */}
                 <td><span className="status active">Activo</span></td>
                 <td>
-                  {<TrashIcon width='30px' height='30px' />}
+                  <i className='bx bx-trash items-icon'></i>
+                  {/* {<TrashIcon width='30px' height='30px' />} */}
                 </td>
                 <td>
-                  {<EditIcon action={openEditModal} item={item} datatableIndex={datatableIndex} />}
+                  <i className='bx bx-edit-alt items-icon' onClick={() => openEditModal(item)}></i>
+
+                  {/* {<EditIcon action={openEditModal} item={item} datatableIndex={datatableIndex} />} */}
                 </td>
               </tr>
             ))}
         </tbody>
-      </table>
+      </table >
       <div className='paginagor-container pag-2' >
         <div>
-          <span>Ver seleccionado</span>
-          <span>Eliminar seleccionados</span>
+          <span>
+            <i className='bx bx-dock-bottom bx-xs'></i>
+            <p>
+              Ver seleccionado
+            </p>
+          </span>
+          <span>
+            <i className='bx bx-trash bx-xs'></i>
+            <p>
+              Eliminar seleccionados
+            </p>
+          </span>
+          <span>
+            <i className='bx bx-printer bx-xs'></i>
+            <p>Guardar Excel</p>
+          </span>
         </div>
         <div className="paginagor-container">
           <button>
