@@ -47,18 +47,21 @@ header {
   flex-direction: column;
 
   border: 1px solid black;
-  background-color: #ffffff9d;
+  /* background-color: #ffffff9d; */
+  background-color: var(--light);
   width: 240px;
   height: auto;
   padding: 8px;
   background: e9ecef;
-  margin-top: 4px;
+  left: -206px;
+  margin-top: 8px;
   border-radius: 8px;
   transform-origin: right top;
 }
 
 .menu a {
   display: flex;
+  align-items: center;
   text-decoration: none;
   font-family: Inter;
   color: black;
@@ -67,8 +70,12 @@ header {
   transition: background 200ms;
 }
 
+.menu > * {
+  gap: 4px;
+}
+
 .menu a:hover {
-  background: rgba(0, 0, 0, 0.05);
+  background: var(--dark-grey);
 }
 
 #menu-checkbox:checked + .menu {
@@ -101,4 +108,10 @@ header {
     transform: scale(0.4);
     display: none;
   }
+}
+
+/* PROFILE ICONS */
+
+.profile-icons {
+  stroke: var(--dark);
 }
