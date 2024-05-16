@@ -15,7 +15,11 @@
   border: 1px solid #e5e7eb;
   border-radius: 0.375rem;
   overflow: hidden;
-  min-height: 750px;
+  /* min-height: 750px; */
+}
+
+.dt-edit {
+  margin-bottom: 70px;
 }
 
 .data-table th,
@@ -64,12 +68,41 @@
 .trash-icon {
   cursor: pointer;
   border-radius: 4px;
-  stroke: var(--dark);
+  /* stroke: var(--dark); */
+  stroke: rgba(255, 0, 0, 0.589);
   padding: 2px;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, stroke 0.3s;
+}
+
+.items-icon {
+  cursor: pointer;
+  border-radius: 14px;
+  stroke: var(--dark);
+  padding: 4px;
+  border: 2px solid transparent;
+  transition: border 0.3s;
+}
+
+.items-icon:hover {
+  /* border: 2px solid rgba(0, 0, 0, 0.37); */
+  border: 2px solid var(--dark);
+}
+
+.edit-icon {
+  cursor: pointer;
+  border-radius: 4px;
+  stroke: var(--dark);
+  padding: 4px;
+  transition: background-color 0.3s, stroke 0.3s;
+}
+
+.edit-icon:hover {
+  stroke: rgba(255, 255, 255, 0.623);
+  background-color: #383838;
 }
 
 .trash-icon:hover {
+  stroke: rgba(0, 0, 0, 0.589);
   background-color: #ffc6c6;
 }
 
@@ -115,8 +148,13 @@
 }
 
 .paginagor-container {
+  border-radius: 0.375rem;
+  border-collapse: collapse;
+  overflow: hidden;
+  margin: auto;
+  min-width: 1150px;
   width: 90%;
-  margin: 0 auto;
+
   align-items: center;
   background-color: var(--light);
   color: #6b7280;
@@ -138,6 +176,12 @@
   flex-direction: column;
 }
 
+.pag-2 > div > * {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
 .pag-2 > :nth-child(3),
 .pag-2 > :nth-child(1) {
   font-size: 14px;
@@ -148,12 +192,13 @@
   flex-direction: row;
 }
 
-.pag-2 > :nth-child(1) > * {
+.pag-2 > :nth-child(1) > *,
+.pag-2 > :nth-child(3) > * {
   cursor: pointer;
-  padding: 4px 14px;
+  padding: 2px 14px;
   margin: 0 10px;
   border: 1px solid gray;
-  border-radius: 14px;
+  border-radius: 4px;
   transition: background-color 0.3s, color 0.3s;
 }
 
@@ -167,7 +212,8 @@
   color: white;
 }
 
-.pag-2 > :nth-child(1) > :nth-child(1):hover {
+.pag-2 > :nth-child(1) > :nth-child(1):hover,
+.pag-2 > :nth-child(1) > :nth-child(3):hover {
   background-color: rgba(0, 0, 0, 0.815);
   color: white;
 }
@@ -215,7 +261,7 @@
 
 /* TRASH ICON */
 
-.trash-icon {
+/* .trash-icon {
   cursor: pointer;
   border-radius: 4px;
   padding: 2px;
@@ -224,12 +270,97 @@
 
 .trash-icon:hover {
   background-color: #ffc6c6;
-}
+} */
 
 /* EDIT ICON */
 
-/* CHECKBOX STYLES */
+/* NEW CHECKBOX */
 
+.cbx {
+  position: relative;
+  top: 1px;
+  width: 17px;
+  height: 17px;
+  border: 1px solid #c8ccd4;
+  border-radius: 3px;
+  vertical-align: middle;
+  transition: background 0.1s ease;
+  cursor: pointer;
+  display: block;
+}
+
+.cbx:after {
+  content: "";
+  position: absolute;
+  top: 1.4px;
+  left: 5px;
+  width: 4px;
+  height: 8px;
+  opacity: 0;
+  transform: rotate(45deg) scale(0);
+  border-right: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  transition: all 0.3s ease;
+  transition-delay: 0.15s;
+}
+
+.lbl {
+  margin-left: 5px;
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+#cbx:checked ~ .cbx {
+  border-color: transparent;
+  background: #6871f1;
+  animation: jelly 0.6s ease;
+}
+
+#cbx:checked ~ .cbx:after {
+  opacity: 1;
+  transform: rotate(45deg) scale(1);
+}
+
+.cntr {
+  position: relative;
+}
+
+@keyframes jelly {
+  from {
+    transform: scale(1, 1);
+  }
+
+  30% {
+    transform: scale(1.25, 0.75);
+  }
+
+  40% {
+    transform: scale(0.75, 1.25);
+  }
+
+  50% {
+    transform: scale(1.15, 0.85);
+  }
+
+  65% {
+    transform: scale(0.95, 1.05);
+  }
+
+  75% {
+    transform: scale(1.05, 0.95);
+  }
+
+  to {
+    transform: scale(1, 1);
+  }
+}
+
+.hidden-xs-up {
+  display: none !important;
+}
+
+/* CHECKBOX STYLES */
+/* 
 .data-table > thead > tr > th > input[type="checkbox"],
 .data-table > tbody > tr > td > input[type="checkbox"],
 .input-checkboxes {
@@ -256,16 +387,18 @@
 .input-checkboxes:checked {
   background-color: #7999dad7;
   border-color: #6b728069;
-}
+} */
 
 .elemento-tabla {
   cursor: pointer;
-  transition: border 0.3s;
+  transition: border 0.3s, font-weight 0.2s;
   border: 1px solid transparent;
 }
 
 .elemento-tabla:hover {
-  border: 1px solid rgba(0, 0, 0, 0.301);
+  /* border: 1px solid rgba(0, 0, 0, 0.301); */
+  color: rgba(53, 255, 144, 0.774);
+  /* font-weight: 600; */
 }
 
 /* EXPORT CSV BUTTON */
@@ -337,4 +470,21 @@
   border: none;
   width: 100%;
   height: 100%;
+}
+
+/* ICONS */
+
+.eye-icon {
+  cursor: pointer;
+  border: 2px solid rgba(139, 139, 139, 0.308);
+  outline: none;
+  color: black;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  transition: border 0.3s;
+}
+
+.eye-icon:hover {
+  border: 2px solid rgba(139, 139, 139, 0.671);
 }
