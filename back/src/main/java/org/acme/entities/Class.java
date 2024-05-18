@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import io.quarkus.hibernate.orm.panache.PanacheQuery;
+import io.quarkus.panache.common.Parameters;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
@@ -19,6 +21,14 @@ import java.util.List;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = false)
+@NamedQueries({
+        @NamedQuery(name = "Class.findByClassName",
+                query = "FROM Class WHERE LOWER(className) LIKE LOWER(CONCAT('%', :className, '%'))"),
+        @NamedQuery(name = "Class.findBySchedule",
+                query = "FROM Class WHERE LOWER(schedule) LIKE LOWER(CONCAT('%', :schedule, '%'))"),
+        @NamedQuery(name = "Class.findByTeacher",
+                query = "FROM Class WHERE teacher.id = :teacherId")
+})
 public class Class extends PanacheEntityBase {
 
     @Id
@@ -46,5 +56,17 @@ public class Class extends PanacheEntityBase {
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     public List<Enrollment> enrollments;
      */
+
+    public static PanacheQuery<Class> findByClassName(String className) {
+        return find("#Class.findByClassName", Parameters.with("className", className));
+    }
+
+    public static PanacheQuery<Class> findBySchedule(String schedule) {
+        return find("#Class.findBySchedule", Parameters.with("schedule", schedule));
+    }
+
+    public static PanacheQuery<Class> findByTeacher(Long teacherId) {
+        return find("#Class.findByTeacher", Parameters.with("teacherId", teacherId));
+    }
 
 }
