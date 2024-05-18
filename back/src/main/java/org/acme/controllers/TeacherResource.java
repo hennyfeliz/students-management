@@ -2,6 +2,7 @@ package org.acme.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.panache.common.Page;
 import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -16,7 +17,12 @@ import org.acme.entities.Teacher;
 import org.acme.pagination.PagedResult;
 import org.jboss.logging.Logger;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
+import static org.acme.Generics.GenericHelper.updateEntity;
 
 @Path("teacher")
 @ApplicationScoped
@@ -31,19 +37,47 @@ public class TeacherResource {
     public Response listAll(
             @QueryParam("page") Integer page,
             @QueryParam("size") Integer size,
-            @QueryParam("sort") String sort
+            @QueryParam("sort") String sort,
+            @QueryParam("teacherName") String teacherName,
+            @QueryParam("subjectTaught") String subjectTaught,
+            @QueryParam("schoolId") Long schoolId
     ) {
-        Long totalCount = Teacher.count();
         size = (size == null) ? 10 : size;
-        page = (page == null) ? 1 : page;
+        page = (page == null) ? 0 : page;
+        sort = (Objects.equals(sort, "")) ? "teacherName" : sort;
 
-        return Response.ok(new PagedResult<>(Teacher.findAll(Sort.by((sort == null) ? "teacherName" : sort))
-                .page(Page.of((page == null) ? 0 : page, (size == null) ? 10 : size))
-                .list(),
-                totalCount,
-                (int) Math.ceil((double) totalCount / size),
-                page > 0,
-                (page + 1) * size < totalCount)).build();
+        // Comenzamos con una consulta base
+        String queryStr = "FROM Teacher WHERE 1=1";
+        Map<String, Object> params = new HashMap<>();
+
+        if (teacherName != null && !teacherName.isEmpty()) {
+            queryStr += " AND LOWER(teacherName) LIKE LOWER(CONCAT('%', :teacherName, '%'))";
+            params.put("teacherName", teacherName);
+        }
+        if (subjectTaught != null && !subjectTaught.isEmpty()) {
+            queryStr += " AND LOWER(subjectTaught) LIKE LOWER(CONCAT('%', :subjectTaught, '%'))";
+            params.put("subjectTaught", subjectTaught);
+        }
+        if (schoolId != null) {
+            queryStr += " AND school.id = :schoolId";
+            params.put("schoolId", schoolId);
+        }
+
+        // Crear la consulta con los parámetros acumulados
+        PanacheQuery<Teacher> query = Teacher.find(queryStr, Sort.by(sort), params);
+
+        Long totalCount = query.count();
+        List<Teacher> teachers = query.page(Page.of(page, size)).list();
+
+        return Response.ok(
+                new PagedResult<>(
+                        teachers,
+                        totalCount,
+                        (int) Math.ceil((double) totalCount / size),
+                        page > 0,
+                        (page + 1) * size < totalCount
+                )
+        ).build();
     }
 
     @Path("{id}")
@@ -69,23 +103,37 @@ public class TeacherResource {
     @PUT
     @Path("{id}")
     @Transactional
-    public Teacher update(Long id, Teacher entity_) {
-        if (entity_.teacherName == null) {
-            throw new WebApplicationException("Teacher Name was not set on request.", 422);
+    public Response updateTeacher(@PathParam("id") Long id, Teacher updatedTeacher) {
+        Teacher existingTeacher = Teacher.findById(id);
+        if (existingTeacher == null) {
+            throw new WebApplicationException("Teacher with id " + id + " does not exist.", 404);
         }
 
-        Teacher entity = Teacher.findById(id);
+        updateEntity(existingTeacher, updatedTeacher);
 
-        if (entity == null) {
-            throw new WebApplicationException("Teacher with id of " + id + " does not exist.", 404);
-        }
-
-        entity.teacherName = entity_.teacherName;
-        entity.subjectTaught = entity_.subjectTaught;
-        entity.school = entity_.school;
-
-        return entity;
+        return Response.ok(existingTeacher).build();
     }
+
+//    @PUT
+//    @Path("{id}")
+//    @Transactional
+//    public Teacher update(Long id, Teacher entity_) {
+//        if (entity_.teacherName == null) {
+//            throw new WebApplicationException("Teacher Name was not set on request.", 422);
+//        }
+//
+//        Teacher entity = Teacher.findById(id);
+//
+//        if (entity == null) {
+//            throw new WebApplicationException("Teacher with id of " + id + " does not exist.", 404);
+//        }
+//
+//        entity.teacherName = entity_.teacherName;
+//        entity.subjectTaught = entity_.subjectTaught;
+//        entity.school = entity_.school;
+//
+//        return entity;
+//    }
 
     @DELETE
     @Path("{id}")
