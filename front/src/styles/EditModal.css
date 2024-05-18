@@ -80,6 +80,7 @@ hr {
 .ed-elements {
   display: flex;
   flex-direction: column;
+  margin: auto;
   margin-bottom: 70px;
 }
 
@@ -94,7 +95,7 @@ hr {
   padding-left: 10px;
 }
 
-.ed-elements > input {
+.ed-elements > div > input {
   border: 2px solid rgba(139, 139, 139, 0.308);
   outline: none;
   color: black;
