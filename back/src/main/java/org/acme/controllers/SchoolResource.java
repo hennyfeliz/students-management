@@ -19,12 +19,17 @@ import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
 
+import org.acme.Generics.GenericHelper;
 import org.acme.entities.School;
 import org.acme.pagination.PagedResult;
 import org.jboss.logging.Logger;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+
+import static org.acme.Generics.GenericHelper.updateEntity;
 
 
 @Path("school")
@@ -38,36 +43,64 @@ public class SchoolResource {
 
     private static final Logger LOGGER = Logger.getLogger(SchoolResource.class.getName());
 
-
     @GET
     public Response listAll(
             @QueryParam("page") Integer page,
             @QueryParam("size") Integer size,
-            @QueryParam("sort") String sort
+            @QueryParam("sort") String sort,
+            @QueryParam("schoolName") String schoolName,
+            @QueryParam("address") String address,
+            @QueryParam("phoneNumber") String phoneNumber
     ) {
-        Long totalCount = School.count();
         size = (size == null) ? 10 : size;
         page = (page == null) ? 0 : page;
         sort = (Objects.equals(sort, "")) ? "schoolName" : sort;
 
+        // Comenzamos con una consulta base
+        String queryStr = "FROM School WHERE 1=1";
+        Map<String, Object> params = new HashMap<>();
+
+        if (schoolName != null && !schoolName.isEmpty()) {
+            queryStr += " AND LOWER(schoolName) LIKE LOWER(CONCAT('%', :schoolName, '%'))";
+            params.put("schoolName", schoolName);
+        }
+        if (address != null && !address.isEmpty()) {
+            queryStr += " AND LOWER(address) LIKE LOWER(CONCAT('%', :address, '%'))";
+            params.put("address", address);
+        }
+        if (phoneNumber != null && !phoneNumber.isEmpty()) {
+            queryStr += " AND LOWER(phoneNumber) LIKE LOWER(CONCAT('%', :phoneNumber, '%'))";
+            params.put("phoneNumber", phoneNumber);
+        }
+
+        // Crear la consulta con los parámetros acumulados
+        PanacheQuery<School> query = School.find(queryStr, Sort.by(sort), params);
+
+        Long totalCount = query.count();
+        List<School> schools = query.page(Page.of(page, size)).list();
+
         return Response.ok(
-        new PagedResult<>(
-        School.findAll(Sort.by((sort == null) ? "schoolName" : sort))
-                .page(Page.of((page == null) ? 0 : page,
-                        (size == null) ? 10 : size))
-                .list(),
-                totalCount,
-                (int) Math.ceil((double) totalCount / size),
-                page > 0,
-                (page + 1) * size < totalCount)).build();
+                new PagedResult<>(
+                        schools,
+                        totalCount,
+                        (int) Math.ceil((double) totalCount / size),
+                        page > 0,
+                        (page + 1) * size < totalCount
+                )
+        ).build();
     }
 
-
-//    @GET
-//    public List<School> getSingle() {
-////        return School.find("school_name LIKE ?1", "%" + schoolName + "%").list();
-//        return School.findBySchoolNameContaining("Greenfield");
-//    }
+    @PUT
+    @Path("{id}")
+    @Transactional
+    public Response updateSchool(@PathParam("id") Long id, School updatedSchool) {
+        School school = School.findById(id);
+        if (school == null) {
+            throw new WebApplicationException("School with id " + id + " does not exist.", 404);
+        }
+        updateEntity(school, updatedSchool);
+        return Response.ok(school).build();
+    }
 
     @POST
     @Transactional
@@ -80,26 +113,26 @@ public class SchoolResource {
         return Response.ok(entity).status(201).build();
     }
 
-    @PUT
-    @Path("{id}")
-    @Transactional
-    public School update(Long id, School entity_) {
-        if (entity_.schoolName == null) {
-          throw new WebApplicationException("School Name was not set on request.", 422);
-        }
-
-        School entity = School.findById(id);
-
-        if (entity == null) {
-            throw new WebApplicationException("School with id of " + id + " does not exist.", 404);
-        }
-
-        entity.schoolName = entity_.schoolName;
-        entity.address = entity_.address;
-        entity.phoneNumber = entity_.phoneNumber;
-
-        return entity;
-    }
+//    @PUT
+//    @Path("{id}")
+//    @Transactional
+//    public School update(Long id, School entity_) {
+//        if (entity_.schoolName == null) {
+//          throw new WebApplicationException("School Name was not set on request.", 422);
+//        }
+//
+//        School entity = School.findById(id);
+//
+//        if (entity == null) {
+//            throw new WebApplicationException("School with id of " + id + " does not exist.", 404);
+//        }
+//
+//        entity.schoolName = entity_.schoolName;
+//        entity.address = entity_.address;
+//        entity.phoneNumber = entity_.phoneNumber;
+//
+//        return entity;
+//    }
 
     @DELETE
     @Path("{id}")
