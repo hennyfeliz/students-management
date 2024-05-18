@@ -2,6 +2,7 @@ package org.acme.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.panache.common.Page;
 import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -16,8 +17,12 @@ import org.acme.entities.Class;
 import org.acme.pagination.PagedResult;
 import org.jboss.logging.Logger;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+
+import static org.acme.Generics.GenericHelper.updateEntity;
 
 @Path("class")
 @ApplicationScoped
@@ -31,20 +36,47 @@ public class ClassResource {
     public Response listAll(
             @QueryParam("page") Integer page,
             @QueryParam("size") Integer size,
-            @QueryParam("sort") String sort
+            @QueryParam("sort") String sort,
+            @QueryParam("className") String className,
+            @QueryParam("schedule") String schedule,
+            @QueryParam("teacherId") Long teacherId
     ) {
-        Long totalCount = Class.count();
         size = (size == null) ? 10 : size;
         page = (page == null) ? 0 : page;
         sort = (Objects.equals(sort, "")) ? "className" : sort;
 
-        return Response.ok(new PagedResult<>(Class.findAll(Sort.by((sort == null) ? "className" : sort))
-                .page(Page.of((page == null) ? 0 : page, (size == null) ? 10 : size))
-                .list(),
-                totalCount,
-                (int) Math.ceil((double) totalCount / size),
-                page > 0,
-                (page + 1) * size < totalCount)).build();
+        // Comenzamos con una consulta base
+        String queryStr = "FROM Class WHERE 1=1";
+        Map<String, Object> params = new HashMap<>();
+
+        if (className != null && !className.isEmpty()) {
+            queryStr += " AND LOWER(className) LIKE LOWER(CONCAT('%', :className, '%'))";
+            params.put("className", className);
+        }
+        if (schedule != null && !schedule.isEmpty()) {
+            queryStr += " AND LOWER(schedule) LIKE LOWER(CONCAT('%', :schedule, '%'))";
+            params.put("schedule", schedule);
+        }
+        if (teacherId != null) {
+            queryStr += " AND teacher.id = :teacherId";
+            params.put("teacherId", teacherId);
+        }
+
+        // Crear la consulta con los parámetros acumulados
+        PanacheQuery<Class> query = Class.find(queryStr, Sort.by(sort), params);
+
+        Long totalCount = query.count();
+        List<Class> classes = query.page(Page.of(page, size)).list();
+
+        return Response.ok(
+                new PagedResult<>(
+                        classes,
+                        totalCount,
+                        (int) Math.ceil((double) totalCount / size),
+                        page > 0,
+                        (page + 1) * size < totalCount
+                )
+        ).build();
     }
 
 
@@ -71,23 +103,37 @@ public class ClassResource {
     @PUT
     @Path("{id}")
     @Transactional
-    public Class update(Long id, Class entity_) {
-        if (entity_.className == null) {
-            throw new WebApplicationException("Class Name was not set on request.", 422);
+    public Response updateClass(@PathParam("id") Long id, Class updatedClass) {
+        Class existingClass = Class.findById(id);
+        if (existingClass == null) {
+            throw new WebApplicationException("Class with id " + id + " does not exist.", 404);
         }
 
-        Class entity = Class.findById(id);
+        updateEntity(existingClass, updatedClass);
 
-        if (entity == null) {
-            throw new WebApplicationException("Class with id of " + id + " does not exist.", 404);
-        }
-
-        entity.className = entity_.className;
-        entity.schedule = entity_.schedule;
-        entity.teacher = entity_.teacher;
-
-        return entity;
+        return Response.ok(existingClass).build();
     }
+
+//    @PUT
+//    @Path("{id}")
+//    @Transactional
+//    public Class update(Long id, Class entity_) {
+//        if (entity_.className == null) {
+//            throw new WebApplicationException("Class Name was not set on request.", 422);
+//        }
+//
+//        Class entity = Class.findById(id);
+//
+//        if (entity == null) {
+//            throw new WebApplicationException("Class with id of " + id + " does not exist.", 404);
+//        }
+//
+//        entity.className = entity_.className;
+//        entity.schedule = entity_.schedule;
+//        entity.teacher = entity_.teacher;
+//
+//        return entity;
+//    }
 
     @DELETE
     @Path("{id}")
