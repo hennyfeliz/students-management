@@ -2,6 +2,9 @@ package org.acme.entities;
 
 import com.fasterxml.jackson.annotation.*;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import io.quarkus.hibernate.orm.panache.PanacheQuery;
+import io.quarkus.panache.common.Parameters;
+import io.quarkus.panache.common.Sort;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,8 +16,15 @@ import java.util.List;
 @Cacheable
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter @Setter
+@Getter
+@Setter
 @EqualsAndHashCode(callSuper = false)
+@NamedQuery(name = "School.findBySchoolName",
+        query = "FROM School WHERE LOWER(schoolName) LIKE LOWER(CONCAT('%', :schoolName, '%'))")
+@NamedQuery(name = "School.findByAddress",
+        query = "FROM School WHERE LOWER(address) LIKE LOWER(CONCAT('%', :address, '%'))")
+@NamedQuery(name = "School.findByPhoneNumber",
+        query = "FROM School WHERE LOWER(phoneNumber) LIKE LOWER(CONCAT('%', :phoneNumber, '%'))")
 public class School extends PanacheEntityBase {
 
     @Id
@@ -42,9 +52,22 @@ public class School extends PanacheEntityBase {
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     public List<Student> students;
 
+//    nuevos query methods
 
-    public static List<School> findBySchoolNameContaining(String nameFragment) {
-        return list("schoolName LIKE ?1", "%" + nameFragment + "%");
+//    public static PanacheQuery<School> findAll(Sort sort) {
+//        return find("FROM School").sort(sort);
+//    }
+
+    public static PanacheQuery<School> findBySchoolName(String schoolName) {
+        return find("#School.findBySchoolName", Parameters.with("schoolName", schoolName));
+    }
+
+    public static PanacheQuery<School> findByAddress(String address) {
+        return find("#School.findByAddress", Parameters.with("address", address));
+    }
+
+    public static PanacheQuery<School> findByPhoneNumber(String phoneNumber) {
+        return find("#School.findByPhoneNumber", Parameters.with("phoneNumber", phoneNumber));
     }
 
 }
