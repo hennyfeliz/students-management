@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import io.quarkus.hibernate.orm.panache.PanacheQuery;
+import io.quarkus.panache.common.Parameters;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
@@ -19,6 +21,14 @@ import java.util.List;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = false)
+@NamedQueries({
+        @NamedQuery(name = "Student.findByStudentName",
+                query = "FROM Student WHERE LOWER(studentName) LIKE LOWER(CONCAT('%', :studentName, '%'))"),
+        @NamedQuery(name = "Student.findByGradeLevel",
+                query = "FROM Student WHERE LOWER(gradeLevel) LIKE LOWER(CONCAT('%', :gradeLevel, '%'))"),
+        @NamedQuery(name = "Student.findBySchool",
+                query = "FROM Student WHERE school.id = :schoolId")
+})
 public class Student extends PanacheEntityBase {
 
     @Id
@@ -43,5 +53,17 @@ public class Student extends PanacheEntityBase {
     @JsonIgnoreProperties("student")
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     public List<Enrollment> enrollments;
+
+    public static PanacheQuery<Student> findByStudentName(String studentName) {
+        return find("#Student.findByStudentName", Parameters.with("studentName", studentName));
+    }
+
+    public static PanacheQuery<Student> findByGradeLevel(String gradeLevel) {
+        return find("#Student.findByGradeLevel", Parameters.with("gradeLevel", gradeLevel));
+    }
+
+    public static PanacheQuery<Student> findBySchool(Long schoolId) {
+        return find("#Student.findBySchool", Parameters.with("schoolId", schoolId));
+    }
 
 }
