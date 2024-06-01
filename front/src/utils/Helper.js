@@ -1,18 +1,18 @@
 export const SidebarItems = [
   {
-    link: "",
+    link: "/users",
     text: "Schools",
     icon: "bx bx-store-alt",
   },
   {
-    link: "",
+    link: "/users",
     text: "Students",
     icon: "bx bx-group",
   },
   {
-    link: "",
-    text: "Analytics",
-    icon: "bx bx-analyse",
+    link: "/contrato",
+    text: "Contratos",
+    icon: "bx bx-pen",
   },
   {
     link: "",

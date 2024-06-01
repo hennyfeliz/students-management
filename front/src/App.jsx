@@ -5,6 +5,7 @@ import { Sidebar } from './components/Sidebar';
 import { MainTwo } from './components/MainTwo';
 import { useState } from 'react';
 import { Login } from './components/Login';
+import Contrato from './components/Contrato';
 
 
 function App() {
@@ -27,20 +28,14 @@ function App() {
         <Route path='/' element={<Login />} />
         <Route path='/users/*' element={
           <>
-            {
-              /*
-              <Header />
-              */
-            }
             <Sidebar datatableIndexHandler={datatableIndexHandler} sidebar={sidebar} />
             <MainTwo datatableIndex={datatableIndex} sidebarHandler={sidebarHandler} />
-            {
-              /*
-              <div className='principal-content'>
-                <Main />
-              </div>
-              */
-            }
+          </>
+        } />
+        <Route path='/contrato/*' element={
+          <>
+            <Sidebar datatableIndexHandler={datatableIndexHandler} sidebar={sidebar} />
+            <Contrato sidebarHandler={sidebarHandler} />
           </>
         } />
       </Routes>
