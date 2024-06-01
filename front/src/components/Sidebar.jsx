@@ -33,13 +33,25 @@ export const Sidebar = ({ datatableIndexHandler, sidebar }) => {
         {
           SidebarItems.map((item, index) => (
             <li key={index} className={active === index ? 'active normal-side-button' : 'normal-side-button'} onClick={() => activeHandler(index)}>
+              {/* <a href='#'> */}
+              <Link to={item.link}>
+                <i className={item.icon}></i>
+                {item.text}
+                {/* </a> */}
+              </Link>
+            </li>
+          ))
+        }
+        {/* {
+          SidebarItems.map((item, index) => (
+            <li key={index} className={active === index ? 'active normal-side-button' : 'normal-side-button'} onClick={() => activeHandler(index)}>
               <a href='#'>
                 <i className={item.icon}></i>
                 {item.text}
               </a>
             </li>
           ))
-        }
+        } */}
       </ul>
       <ul className="side-menu logout-side-menu-button">
         <li>
