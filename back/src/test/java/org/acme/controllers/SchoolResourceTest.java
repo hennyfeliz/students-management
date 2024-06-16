@@ -1,54 +1,55 @@
-//package org.acme.controllers;
-//
-//import io.quarkus.test.junit.QuarkusTest;
-//import io.restassured.RestAssured;
-//import io.restassured.http.ContentType;
+package org.acme.controllers;
+
+import io.quarkus.test.junit.QuarkusTest;
+import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
 //import jakarta.transaction.Transactional;
-//import org.acme.entities.School;
-//import org.junit.jupiter.api.BeforeEach;
-//import org.junit.jupiter.api.Test;
-//import org.junit.jupiter.api.TestInstance;
-//
-////import javax.transaction.Transactional;
-//import java.util.HashMap;
-//import java.util.Map;
-//
-//import static io.restassured.RestAssured.given;
-//import static org.hamcrest.CoreMatchers.is;
-//import static org.hamcrest.Matchers.*;
-//
-//@QuarkusTest
-//@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-//public class SchoolResourceTest {
-//
-//    @BeforeEach
-//    @Transactional
-//    public void setup() {
-//        // Limpiar la base de datos antes de cada prueba
-//        School.deleteAll();
-//    }
-//
-//    @Test
-//    public void testListAllSchools() {
-//        // Insertar datos de prueba
-//        School school1 = new School();
-//        school1.schoolName = "School One";
-//        school1.persist();
-//
-//        School school2 = new School();
-//        school2.schoolName = "School Two";
-//        school2.persist();
-//
-//        given()
-//                .queryParam("page", 0)
-//                .queryParam("size", 10)
-//                .when().get("/school")
-//                .then()
-//                .statusCode(200)
-//                .body("totalCount", is(2))
-//                .body("items.schoolName", hasItems("School One", "School Two"));
-//    }
-//
+import jakarta.transaction.Transactional;
+import org.acme.entities.School;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+
+//import javax.transaction.Transactional;
+import java.util.HashMap;
+import java.util.Map;
+
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.*;
+
+@QuarkusTest
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+public class SchoolResourceTest {
+
+    @BeforeEach
+    @Transactional
+    public void setup() {
+        // Limpiar la base de datos antes de cada prueba
+        School.deleteAll();
+    }
+
+    @Test
+    public void testListAllSchools() {
+        // Insertar datos de prueba
+        School school1 = new School();
+        school1.schoolName = "School One";
+        school1.persist();
+
+        School school2 = new School();
+        school2.schoolName = "School Two";
+        school2.persist();
+
+        given()
+                .queryParam("page", 0)
+                .queryParam("size", 10)
+                .when().get("/school")
+                .then()
+                .statusCode(200)
+                .body("totalCount", is(2))
+                .body("items.schoolName", hasItems("School One", "School Two"));
+    }
+
 //    @Test
 //    public void testCreateSchool() {
 //        School newSchool = new School();
@@ -154,4 +155,4 @@
 //                .body("totalCount", is(1))
 //                .body("items[0].phoneNumber", is("555-0000"));
 //    }
-//}
+}
