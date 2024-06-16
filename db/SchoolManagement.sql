@@ -7,32 +7,41 @@ CREATE TABLE School (
     phone_number VARCHAR(20)
 );
 GO
+
 CREATE TABLE Teachers (
     teacher_id INT PRIMARY KEY IDENTITY(1,1),
-    school_id INT FOREIGN KEY REFERENCES School(school_id),
+    school_id INT,
     teacher_name VARCHAR(100) NOT NULL,
-    subject_taught VARCHAR(100)
+    subject_taught VARCHAR(100),
+    FOREIGN KEY (school_id) REFERENCES School(school_id) ON DELETE SET NULL
 );
 GO
+
 CREATE TABLE Students (
     student_id INT PRIMARY KEY IDENTITY(1,1),
-    school_id INT FOREIGN KEY REFERENCES School(school_id),
+    school_id INT,
     student_name VARCHAR(100) NOT NULL,
-    grade_level VARCHAR(20)
+    grade_level VARCHAR(20),
+    FOREIGN KEY (school_id) REFERENCES School(school_id) ON DELETE SET NULL
 );
 GO
+
 CREATE TABLE Classes (
     class_id INT PRIMARY KEY IDENTITY(1,1),
-    teacher_id INT FOREIGN KEY REFERENCES Teachers(teacher_id),
+    teacher_id INT,
     class_name VARCHAR(100),
-    schedule VARCHAR(50)
+    schedule VARCHAR(50),
+    FOREIGN KEY (teacher_id) REFERENCES Teachers(teacher_id) ON DELETE SET NULL
 );
 GO
+
 CREATE TABLE Enrollments (
     enrollment_id INT PRIMARY KEY IDENTITY(1,1),
-    student_id INT FOREIGN KEY REFERENCES Students(student_id),
-    class_id INT FOREIGN KEY REFERENCES Classes(class_id),
-    enrollment_date DATE
+    student_id INT,
+    class_id INT,
+    enrollment_date DATE,
+    FOREIGN KEY (student_id) REFERENCES Students(student_id) ON DELETE SET NULL,
+    FOREIGN KEY (class_id) REFERENCES Classes(class_id) ON DELETE SET NULL
 );
 GO
 INSERT INTO School (school_name, address, phone_number)
