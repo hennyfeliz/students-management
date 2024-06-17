@@ -7,6 +7,8 @@ import io.quarkus.panache.common.Parameters;
 import io.quarkus.panache.common.Sort;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,18 +47,14 @@ public class School extends PanacheEntityBase {
     @OneToMany(mappedBy = "school", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties("school")
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @Fetch(FetchMode.SUBSELECT)
     public List<Teacher> teachers;
 
     @OneToMany(mappedBy = "school", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties("school")
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @Fetch(FetchMode.SUBSELECT)
     public List<Student> students;
-
-//    nuevos query methods
-
-//    public static PanacheQuery<School> findAll(Sort sort) {
-//        return find("FROM School").sort(sort);
-//    }
 
     public static PanacheQuery<School> findBySchoolName(String schoolName) {
         return find("#School.findBySchoolName", Parameters.with("schoolName", schoolName));
