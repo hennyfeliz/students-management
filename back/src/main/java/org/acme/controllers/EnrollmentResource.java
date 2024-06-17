@@ -18,10 +18,7 @@ import org.acme.pagination.PagedResult;
 import org.jboss.logging.Logger;
 
 import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 import static org.acme.Generics.GenericHelper.updateEntity;
 
@@ -46,6 +43,13 @@ public class EnrollmentResource {
         page = (page == null) ? 0 : page;
         sort = (Objects.equals(sort, "")) ? "enrollmentDate" : sort;
 
+        String validSortColumn = "enrollmentDate";
+
+        List<String> validSortColumns = Arrays.asList("enrollmentDate", "studentId");
+        if (validSortColumns.contains(sort)) {
+            validSortColumn = sort;
+        }
+
         // Comenzamos con una consulta base
         String queryStr = "FROM Enrollment WHERE 1=1";
         Map<String, Object> params = new HashMap<>();
@@ -60,7 +64,7 @@ public class EnrollmentResource {
         }
 
         // Crear la consulta con los parámetros acumulados
-        PanacheQuery<Enrollment> query = Enrollment.find(queryStr, Sort.by(sort), params);
+        PanacheQuery<Enrollment> query = Enrollment.find(queryStr, Sort.by(validSortColumn), params);
 
         Long totalCount = query.count();
         List<Enrollment> enrollments = query.page(Page.of(page, size)).list();
