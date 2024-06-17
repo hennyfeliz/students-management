@@ -17,10 +17,7 @@ import org.acme.entities.Student;
 import org.acme.pagination.PagedResult;
 import org.jboss.logging.Logger;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 import static org.acme.Generics.GenericHelper.updateEntity;
 
@@ -45,6 +42,13 @@ public class StudentResource {
         page = (page == null) ? 0 : page;
         sort = (Objects.equals(sort, "")) ? "studentName" : sort;
 
+        String validSortColumn = "studentName";
+
+        List<String> validSortColumns = Arrays.asList("studentName", "gradeLevel", "schoolId");
+        if (validSortColumns.contains(sort)) {
+            validSortColumn = sort;
+        }
+
         // Comenzamos con una consulta base
         String queryStr = "FROM Student WHERE 1=1";
         Map<String, Object> params = new HashMap<>();
@@ -63,7 +67,7 @@ public class StudentResource {
         }
 
         // Crear la consulta con los parámetros acumulados
-        PanacheQuery<Student> query = Student.find(queryStr, Sort.by(sort), params);
+        PanacheQuery<Student> query = Student.find(queryStr, Sort.by(validSortColumn), params);
 
         Long totalCount = query.count();
         List<Student> students = query.page(Page.of(page, size)).list();
