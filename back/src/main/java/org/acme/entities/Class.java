@@ -8,10 +8,10 @@ import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.panache.common.Parameters;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-
-import java.util.List;
 
 @Entity
 @Table(name = "Classes")
@@ -48,14 +48,6 @@ public class Class extends PanacheEntityBase {
     @JsonIgnoreProperties("classes")
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     public Teacher teacher;
-
-    /*
-
-    @OneToMany(mappedBy = "classs", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnoreProperties("classs")
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-    public List<Enrollment> enrollments;
-     */
 
     public static PanacheQuery<Class> findByClassName(String className) {
         return find("#Class.findByClassName", Parameters.with("className", className));

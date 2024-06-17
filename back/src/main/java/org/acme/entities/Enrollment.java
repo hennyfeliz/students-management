@@ -42,17 +42,6 @@ public class Enrollment extends PanacheEntityBase {
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     public Student student;
 
-    /*
-
-
-    @OnDelete(action = OnDeleteAction.SET_NULL)
-    @ManyToOne
-    @JoinColumn(name = "class_id", referencedColumnName = "class_id")
-    @JsonIgnoreProperties("enrollments")
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-    public Class classs;
-     */
-
     @Basic
     @Column(name = "enrollment_date")
     public Timestamp enrollmentDate;
