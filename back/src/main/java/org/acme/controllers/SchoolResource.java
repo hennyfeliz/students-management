@@ -4,11 +4,11 @@ package org.acme.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.panache.common.Page;
 
 import io.quarkus.panache.common.Sort;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
@@ -19,15 +19,12 @@ import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
 
-import org.acme.Generics.GenericHelper;
 import org.acme.entities.School;
 import org.acme.pagination.PagedResult;
+import org.hibernate.Hibernate;
 import org.jboss.logging.Logger;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 import static org.acme.Generics.GenericHelper.updateEntity;
 
@@ -36,6 +33,7 @@ import static org.acme.Generics.GenericHelper.updateEntity;
 @ApplicationScoped
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
+@RolesAllowed({"VIEW_ADMIN_DETAILS"})
 public class SchoolResource {
 
     @Inject
@@ -56,6 +54,13 @@ public class SchoolResource {
         page = (page == null) ? 0 : page;
         sort = (Objects.equals(sort, "")) ? "schoolName" : sort;
 
+        String validSortColumn = "schoolName";
+
+        List<String> validSortColumns = Arrays.asList("schoolName", "address", "phoneNumber");
+        if (validSortColumns.contains(sort)) {
+            validSortColumn = sort;
+        }
+
         // Comenzamos con una consulta base
         String queryStr = "FROM School WHERE 1=1";
         Map<String, Object> params = new HashMap<>();
@@ -74,7 +79,7 @@ public class SchoolResource {
         }
 
         // Crear la consulta con los parámetros acumulados
-        PanacheQuery<School> query = School.find(queryStr, Sort.by(sort), params);
+        PanacheQuery<School> query = School.find(queryStr, Sort.by(validSortColumn), params);
 
         Long totalCount = query.count();
         List<School> schools = query.page(Page.of(page, size)).list();
@@ -96,10 +101,17 @@ public class SchoolResource {
     public Response updateSchool(@PathParam("id") Long id, School updatedSchool) {
         School school = School.findById(id);
         if (school == null) {
-            throw new WebApplicationException("School with id " + id + " does not exist.", 404);
+//            throw new WebApplicationException("School with id " + id + " does not exist.", 404);
+                return Response.status(Response.Status.NOT_FOUND).build();
         }
         updateEntity(school, updatedSchool);
+        initializeCollections(school);
         return Response.ok(school).build();
+    }
+
+    private void initializeCollections(School school) {
+        Hibernate.initialize(school.getTeachers());
+        Hibernate.initialize(school.getStudents());
     }
 
     @POST
