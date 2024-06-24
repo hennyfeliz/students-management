@@ -1,3 +1,6 @@
+
+
+GO
 Create database SchoolManagement;
 GO
 CREATE TABLE School (
@@ -266,4 +269,41 @@ BEGIN
     -- Incrementar el contador del bucle
     SET @counter = @counter + 1;
 END;
+GO
+
+  -- Crear la tabla roles
+CREATE TABLE roles (
+    name NVARCHAR(255) PRIMARY KEY,
+    permissions NVARCHAR(255) NOT NULL
+);
+GO
+-- Insertar datos en la tabla roles
+INSERT INTO roles (name, permissions) VALUES ('ADMIN', 'VIEW_ADMIN_DETAILS,CREATE_USER,SEND_MESSAGE,VIEW_USER_DETAILS');
+INSERT INTO roles (name, permissions) VALUES ('USER', 'VIEW_USER_DETAILS,SEND_MESSAGE');
+INSERT INTO roles (name, permissions) VALUES ('GUEST', 'SEND_MESSAGE');
+GOGO
+-- Crear la tabla users
+CREATE TABLE users (
+    id BIGINT PRIMARY KEY,
+    username NVARCHAR(255) UNIQUE NOT NULL,
+    password NVARCHAR(255) NOT NULL,
+    email NVARCHAR(255) UNIQUE NOT NULL
+);
+GO
+-- Insertar datos en la tabla users
+INSERT INTO users (id, username, password, email) VALUES (1, 'admin', '$2a$10$sWfRL1ruggfeebSfeMnToOeeuQTzSFY.khIlS/dzWY6qYOekisccS', 'admin@test.io');
+INSERT INTO users (id, username, password, email) VALUES (2, 'user', '$2a$16$6AZvwlL1PCJ7fgoNVBlezOnoB6WkZlmj6mvQPP5/0uWyso8nVOdXm', 'user@test.io');
+INSERT INTO users (id, username, password, email) VALUES (3, 'guest', '$2a$16$Sd0wA6le90dUTe3OAUiSZe.FmPL96XLvRYUUbhitF3.dmgF/dLgFm', 'guest@test.io');
+GO
+-- Crear la tabla user_roles
+CREATE TABLE user_roles (
+    user_id BIGINT,
+    role_name NVARCHAR(255),
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+GO
+-- Insertar datos en la tabla user_roles
+INSERT INTO user_roles (user_id, role_name) VALUES (1, 'ADMIN');
+INSERT INTO user_roles (user_id, role_name) VALUES (2, 'USER');
+INSERT INTO user_roles (user_id, role_name) VALUES (3, 'GUEST');
 GO
