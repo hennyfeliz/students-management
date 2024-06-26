@@ -2,7 +2,9 @@ import { useRef, useState } from 'react';
 import '../styles/Login.css'
 import { useNavigate } from 'react-router-dom';
 import { EyeIcon } from '../assets/icons/Icons';
-
+import loginFetch from '../utils/Login.js'
+import Cookies from 'js-cookie'
+import { toast } from 'sonner';
 
 export const Login = () => {
 
@@ -14,20 +16,19 @@ export const Login = () => {
   const [passwordViewer, setPasswordViewer] = useState(false);
 
   const handleSubmit = async () => {
-    console.log(email.current.value, password.current.value)
-    navigate("/users")
-    // validateUser(email.current.value, password.current.value)
-    //   .then((response) => {
-    //     if (true) {
-    //       new AWN().success('Usuario verificado de manera correcta.')
-    //     } else {
-    //       new AWN().alert('Error de credenciales, vuelva a intentar.')
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     new AWN().alert('Error de credenciales, vuelva a intentar.')
-    //     console.log(err)
-    //   })
+    loginFetch({ username: email.current.value, password: password.current.value })
+      .then((response) => {
+        if (response.status === 200) {
+          toast.success('Inicio de sesión exitoso')
+          navigate("/users")
+        }
+        if (response.status === 401) toast.error('Error de credenciales');
+        return response.json()
+      })
+      .then((data) => {
+        if (data.token) { Cookies.set('token', data.token) }
+      })
+      .catch((error) => { toast.error('Error en inicio de sesión'); console.log(error) });
   }
 
   const handleCheckboxChange = () => {
@@ -36,20 +37,11 @@ export const Login = () => {
 
   return (
     <div className='login-component'>
-      {/* <div className='login'>
-        <input type="text" placeholder='username' />
-        <input type="password" placeholder='password' />
-      </div> */}
       <div className='login'>
         <div className="login-card">
           <div className='login-icon'>
             <h2>Bienvenido a su app</h2>
             <span>Por favor, introduzca sus datos para entrar</span>
-            {/* <svg width="92px" height="92px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" >
-              <circle cx="12" cy="9" r="3" stroke="#fff" strokeWidth="1.5" />
-              <path d="M17.9691 20C17.81 17.1085 16.9247 15 11.9999 15C7.07521 15 6.18991 17.1085 6.03076 20" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" />
-              <path d="M7 3.33782C8.47087 2.48697 10.1786 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 10.1786 2.48697 8.47087 3.33782 7" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" />
-            </svg> */}
           </div>
           <div className="login-elements">
             <span>Usuario</span>
