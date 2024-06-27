@@ -16,6 +16,8 @@ import Modal from './Modal'
 import { EditModal } from './EditModal'
 import { TableSchemes } from '../utils/TableSchema'
 import * as XLSX from 'xlsx';
+import Cookies from 'js-cookie';
+// import { useCookies } from 'react-cookie';
 
 export const Table = ({ datatableIndex }) => {
   const [data, setData] = useState([]);
@@ -40,6 +42,10 @@ export const Table = ({ datatableIndex }) => {
       index: numPage,
       size: numRecordsPage,
       filters,
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": Cookies.get('token'),
+      },
     }).then((data) => {
       setData(data.data);
       setTotalElements(data.totalElements);
