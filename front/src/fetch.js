@@ -5,7 +5,9 @@ export const getData = ({
   sort = "",
   filters = {},
   method = "GET",
-  headers = { "Content-Type": "application/json" },
+  headers = {
+    "Content-Type": "application/json",
+  },
 }) => {
   const queryParams = new URLSearchParams({
     page: index - 1,
