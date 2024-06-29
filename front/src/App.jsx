@@ -6,6 +6,7 @@ import { MainTwo } from './components/MainTwo';
 import { useState } from 'react';
 import { Login } from './components/Login';
 import Contrato from './components/Contrato';
+import { Toaster } from 'sonner';
 
 
 function App() {
@@ -39,7 +40,7 @@ function App() {
           </>
         } />
       </Routes>
-
+      <Toaster position="bottom-center" richColors />
     </BrowserRouter>
   )
 }
