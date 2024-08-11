@@ -105,13 +105,7 @@ public class SchoolResource {
                 return Response.status(Response.Status.NOT_FOUND).build();
         }
         updateEntity(school, updatedSchool);
-        initializeCollections(school);
         return Response.ok(school).build();
-    }
-
-    private void initializeCollections(School school) {
-        Hibernate.initialize(school.getTeachers());
-        Hibernate.initialize(school.getStudents());
     }
 
     @POST

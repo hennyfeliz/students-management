@@ -16,11 +16,12 @@ export const Login = () => {
   const [passwordViewer, setPasswordViewer] = useState(false);
 
   const handleSubmit = async () => {
+    navigate("/users")
     loginFetch({ username: email.current.value, password: password.current.value })
       .then((response) => {
         if (response.status === 200) {
           toast.success('Inicio de sesión exitoso')
-          navigate("/users")
+
         }
         if (response.status === 401) toast.error('Error de credenciales');
         return response.json()
